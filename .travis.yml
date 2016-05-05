@@ -1,1 +1,3 @@
 language: java
+notifications:
+  slack: zaawansowana-java:CzxbQh0rn45uVv6M2spu0HH8
