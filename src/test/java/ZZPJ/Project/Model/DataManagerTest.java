@@ -23,7 +23,7 @@ public class DataManagerTest {
 
     private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
 
-    public Document getDocument(String fileName){
+    public Document getDocumenFromFile(String fileName){
         File file = new File(fileName);
         Document document = new Document(fileName);
         try {
@@ -45,12 +45,12 @@ public class DataManagerTest {
     @Test
     public void getPageIdTest(){
         DataManager dataManager = new DataManager();
-        Document doc = getDocument(movieTestPath);
+        Document doc = getDocumenFromFile(movieTestPath);
         assertEquals("tt0482571",dataManager.getPageId(doc));
     }
 
     @Test
-    public void getTitleMockTest(){
+    public void getMovieTitleMockTest(){
         DataManager dataManager = mock(DataManager.class);
         when(dataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
         Document document = new Document("");
@@ -58,9 +58,9 @@ public class DataManagerTest {
     }
 
     @Test
-    public void getTitleTest(){
+    public void getMovieTitleTest(){
         DataManager dataManager = new DataManager();
-        Document doc = getDocument(movieTestPath);
+        Document doc = getDocumenFromFile(movieTestPath);
         assertEquals("Prestiz",dataManager.getMovieTitle(doc));
     }
 
@@ -76,7 +76,7 @@ public class DataManagerTest {
     @Test
     public void getMovieReleaseDateTest(){
         DataManager dataManager = new DataManager();
-        Document document = getDocument(movieTestPath);
+        Document document = getDocumenFromFile(movieTestPath);
         Format formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
         Date date = dataManager.getMovieReleaseDate(document);
         String result = formatter.format(date);
@@ -95,7 +95,7 @@ public class DataManagerTest {
     @Test
     public void getMovieRateTest(){
         DataManager dataManager = new DataManager();
-        Document document = getDocument(movieTestPath);
+        Document document = getDocumenFromFile(movieTestPath);
         assertEquals(8.5, dataManager.getMovieRate(document), 0.0);
     }
 
@@ -110,7 +110,7 @@ public class DataManagerTest {
     @Test
     public void getMovieRatingCountTest(){
         DataManager dataManager = new DataManager();
-        Document document = getDocument(movieTestPath);
+        Document document = getDocumenFromFile(movieTestPath);
         assertEquals(845705, dataManager.getMovieRatingCount(document), 0.0);
     }
 
@@ -130,7 +130,7 @@ public class DataManagerTest {
     @Test
     public void getMovieGenresTest(){
         DataManager dataManager = new DataManager();
-        Document document = getDocument(movieTestPath);
+        Document document = getDocumenFromFile(movieTestPath);
         List<String> genres = new ArrayList<String>();
         genres.add("Drama");
         genres.add("Mystery");
