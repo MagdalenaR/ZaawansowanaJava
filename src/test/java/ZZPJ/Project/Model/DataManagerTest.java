@@ -22,8 +22,9 @@ import static org.mockito.Mockito.when;
 public class DataManagerTest {
 
     private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
+    private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
 
-    public Document getDocumenFromFile(String fileName){
+    private Document getDocumenFromFile(String fileName){
         File file = new File(fileName);
         Document document = new Document(fileName);
         try {
@@ -139,5 +140,49 @@ public class DataManagerTest {
         assertThat(result.get(0)).isEqualTo("Drama");
         assertThat(result.get(1)).isEqualTo("Mystery");
         assertThat(result.get(2)).isEqualTo("Sci-Fi");
+    }
+
+    @Test
+    public void getActorNameMockTest(){
+        DataManager dataManager = mock(DataManager.class);
+        when(dataManager.getActorName(any(Document.class))).thenReturn("Leonardo DiCaprio");
+        Document document = new Document("");
+        assertEquals("Leonardo DiCaprio",dataManager.getActorName(document));
+    }
+
+    @Test
+    public void getActorNameTest(){
+        DataManager dataManager = new DataManager();
+        Document doc = getDocumenFromFile(actorTestPath);
+        assertEquals("Leonardo DiCaprio",dataManager.getActorName(doc));
+    }
+
+    @Test
+    public void getActorBirthDateMockTest(){
+        DataManager dataManager = mock(DataManager.class);
+        Date date = new Date();
+        when(dataManager.getActorBirthDate(any(Document.class))).thenReturn(date);
+        Document document = new Document("");
+        assertEquals(date,dataManager.getActorBirthDate(document));
+    }
+
+    @Test
+    public void getActorBirthDateTest(){
+        DataManager dataManager = new DataManager();
+        Document document = getDocumenFromFile(actorTestPath);
+        Format formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
+        Date date = dataManager.getActorBirthDate(document);
+        String result = formatter.format(date);
+        assertEquals("11 November 1974",result);
+    }
+
+    @Test
+    public void getActorMoviesMockTest(){
+
+    }
+
+    @Test
+    public void getActorMoviesTest(){
+
     }
 }

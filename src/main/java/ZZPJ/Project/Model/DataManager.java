@@ -82,4 +82,24 @@ public class DataManager {
         }
         return genres;
     }
+
+    public String getActorName(Document document){
+        return document.select( "meta[property=og:title]" ).attr("content");
+    }
+
+    public Date getActorBirthDate(Document document){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date birth = null;
+        try {
+            birth = format.parse( document.select("time[itemprop=birthDate]").attr("datetime") );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return birth;
+    }
+
+    public List<Movie> getActorMovies(Document document){
+
+        return null;
+    }
 }
