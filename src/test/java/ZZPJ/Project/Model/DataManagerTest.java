@@ -131,7 +131,7 @@ public class DataManagerTest {
     @Test
     public void getMovieGenresMockTest(){
         DataManager dataManager = mock(DataManager.class);
-        List<String> genres = new ArrayList<>();
+        List<String> genres = new ArrayList<String>();
         genres.add("action");
         genres.add("biography");
         when(dataManager.getMovieGenres(any(Document.class))).thenReturn(genres);

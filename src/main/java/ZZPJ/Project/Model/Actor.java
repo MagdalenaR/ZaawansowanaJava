@@ -12,7 +12,7 @@ public class Actor {
     private String id;
     private String name;
     private Date birthDate;
-    private List<Movie> movies = new ArrayList<>();
+    private List<Movie> movies = new ArrayList<Movie>();
 
     public void showActorInformatation(){
         String birth = null;
