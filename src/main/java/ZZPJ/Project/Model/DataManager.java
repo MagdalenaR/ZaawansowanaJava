@@ -118,9 +118,7 @@ public class DataManager {
                 public void run() {
                     try {
                         Movie movie = (Movie) movieType.newInstance();
-                        System.out.println("Start downloading movie " + link);
                         movie.downloadMovieInfo(dataManager, ("http://www.imdb.com" + link));
-                        System.out.println("Finish downloading movie " + link);
                         movies.add(movie);
                     } catch (InstantiationException e) {
                         e.printStackTrace();
