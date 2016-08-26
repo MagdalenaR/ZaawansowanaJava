@@ -17,8 +17,8 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.*;
 
 public class DataManagerTest {
 
@@ -34,6 +34,19 @@ public class DataManagerTest {
             e.printStackTrace();
         }
         return document;
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void downloadDocumentExceptionTest(){
+        DataManager dataManager = new DataManager();
+        dataManager.downloadDocument("");
+    }
+
+    @Test
+    public void downloadDocumentTest(){
+        String url = "http://www.imdb.com/name/nm0000288/";
+        DataManager dataManager = new DataManager();
+        assertThat(dataManager.downloadDocument(url)).isNotNull();
     }
 
     @Test
@@ -67,24 +80,23 @@ public class DataManagerTest {
     }
 
     @Test
-    public void getMovieReleaseDateMockTest(){
+    public void getMovieReleaseYearMockTest(){
         DataManager dataManager = mock(DataManager.class);
         Date date = new Date();
-        when(dataManager.getMovieReleaseDate(any(Document.class))).thenReturn(date);
+        when(dataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
         Document document = new Document("");
-        assertEquals(date,dataManager.getMovieReleaseDate(document));
+        assertEquals(date,dataManager.getMovieReleaseYear(document));
     }
 
     @Test
-    public void getMovieReleaseDateTest(){
+    public void getMovieReleaseYearTest(){
         DataManager dataManager = new DataManager();
         Document document = getDocumenFromFile(movieTestPath);
-        Format formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
-        Date date = dataManager.getMovieReleaseDate(document);
+        Format formatter = new SimpleDateFormat("yyyy");
+        Date date = dataManager.getMovieReleaseYear(document);
         String result = formatter.format(date);
-        assertEquals("05 January 2007",result);
+        assertEquals("2007",result);
     }
-
 
     @Test
     public void getMovieRateMockTest(){
@@ -178,14 +190,36 @@ public class DataManagerTest {
     }
 
     @Test
-    public void getActorMoviesMockTest(){
-        System.out.print("not implemented");
-        Assert.fail();
+    public void getActorMoviesLinksMockTest(){
+        List<String> links = new ArrayList<String>();
+        DataManager dataManager = mock(DataManager.class);
+        when(dataManager.getActorMoviesLinks(any(Document.class))).thenReturn(links);
+        assertThat(dataManager.getActorMoviesLinks(new Document(""))).isEqualTo(links);
     }
 
     @Test
-    public void getActorMoviesTest(){
-        System.out.print("not implemented");
-        Assert.fail();
+    public void getActorMoviesLinksTest(){
+        DataManager dataManager = new DataManager();
+        Document doc = getDocumenFromFile(actorTestPath);
+        assertThat(dataManager.getActorMoviesLinks(doc)).hasSize(37);
     }
+
+    @Test
+    public void getMoviesFromLinksTest(){
+        DataManager dataManager = mock(DataManager.class);
+        when(dataManager.getMoviesFromLinks(anyListOf(String.class),any())).thenCallRealMethod();
+        List<Movie> result = dataManager.getMoviesFromLinks(new ArrayList<String>(), MovieBasic.class);
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void getMoviesTest(){
+        DataManager dataManager = mock(DataManager.class);
+        Document doc = getDocumenFromFile(actorTestPath);
+        when(dataManager.getActorMovies(doc,MovieBasic.class)).thenCallRealMethod();
+        when(dataManager.getMoviesFromLinks(any(),any())).thenReturn(new ArrayList<Movie>());
+
+        assertThat(dataManager.getActorMovies(doc,MovieBasic.class)).isEmpty();
+    }
+
 }

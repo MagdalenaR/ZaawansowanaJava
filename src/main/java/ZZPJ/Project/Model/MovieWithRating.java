@@ -3,7 +3,6 @@ package ZZPJ.Project.Model;
 import org.jsoup.nodes.Document;
 
 public class MovieWithRating extends MovieDecorator {
-    //protected Movie movie;
     protected double rate;
     protected double ratingCount;
 

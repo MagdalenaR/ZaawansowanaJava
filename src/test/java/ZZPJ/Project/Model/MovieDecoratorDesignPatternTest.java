@@ -39,29 +39,12 @@ public class MovieDecoratorDesignPatternTest {
     }
 
     @Test
-    public void test(){
-        String url = "http://www.imdb.com/title/tt0468569/";
-        Movie m1 = new MovieBasic();
-        DataManager dataManager = new DataManager();
-        m1.downloadMovieInfo(dataManager, url);
-        m1.showMovieInformatation();
-        System.out.println();
-        m1 = new MovieWithGenres(m1);
-        m1.downloadMovieInfo(dataManager, url);
-        m1.showMovieInformatation();
-        System.out.println();
-        m1 = new MovieWithRating(m1);
-        m1.downloadMovieInfo(dataManager, url);
-        m1.showMovieInformatation();
-    }
-
-    @Test
     public void downloadMovieBasicInfoTest(){
 
         Date date = new Date();
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
-        when(mockedDataManager.getMovieReleaseDate(any(Document.class))).thenReturn(date);
+        when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
 
         String url = "";
         sutMovieBasic.downloadMovieInfo(mockedDataManager, url);
@@ -78,7 +61,7 @@ public class MovieDecoratorDesignPatternTest {
         Date date = new Date();
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
-        when(mockedDataManager.getMovieReleaseDate(any(Document.class))).thenReturn(date);
+        when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
 
         when(mockedDataManager.getMovieRate(any(Document.class))).thenReturn(5.0);
         when(mockedDataManager.getMovieRatingCount(any(Document.class))).thenReturn(10.0);
@@ -99,7 +82,7 @@ public class MovieDecoratorDesignPatternTest {
         Date date = new Date();
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
-        when(mockedDataManager.getMovieReleaseDate(any(Document.class))).thenReturn(date);
+        when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
         when(mockedDataManager.getMovieGenres(any(Document.class))).thenReturn(Arrays.asList("genre1", "genre2"));
 
         sutMovieWithGenres.downloadMovieInfo(mockedDataManager, "");
@@ -116,7 +99,7 @@ public class MovieDecoratorDesignPatternTest {
         Date date = new Date();
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
-        when(mockedDataManager.getMovieReleaseDate(any(Document.class))).thenReturn(date);
+        when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
 
         when(mockedDataManager.getMovieRate(any(Document.class))).thenReturn(5.0);
         when(mockedDataManager.getMovieRatingCount(any(Document.class))).thenReturn(10.0);

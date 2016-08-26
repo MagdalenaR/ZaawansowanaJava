@@ -12,14 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 
 public class DataManager {
 
     public Document downloadDocument(String url){
         Document document = new Document(url);
         try {
-            document = Jsoup.connect(url).get();
+            document = Jsoup.connect(url).timeout(100*1000).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,18 +36,13 @@ public class DataManager {
         return title.substring(0,title.length()-1);
     }
 
-    public Date getMovieReleaseDate(Document document){
-        SimpleDateFormat format;
+    public Date getMovieReleaseYear(Document document){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
         Date date = null;
         Element element = document.select("div[class=txt-block]:contains(Release Date)" ).first();
         String[] dateWithCountry = ((TextNode) element.childNodes().get( 2 )).text().split(" \\(");
-        String dateString = dateWithCountry[0].substring(1);
+        String dateString = dateWithCountry[0].substring(dateWithCountry[0].length()-4);
 
-        if(dateString.length()==4){
-            format = new SimpleDateFormat("yyyy");
-        } else {
-            format = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
-        }
         try {
             date = format.parse(dateString);
         } catch (ParseException e) {
@@ -98,8 +93,51 @@ public class DataManager {
         return birth;
     }
 
-    public List<Movie> getActorMovies(Document document){
+    public List<Movie> getActorMovies(Document document, Class<?> movieType){
+        List<String> links = getActorMoviesLinks(document);
+        List<Movie> movies = getMoviesFromLinks(links,movieType);
+        return  movies;
+    }
 
-        return null;
+    public List<String> getActorMoviesLinks(Document document){
+        List<String> links = new ArrayList<String>();
+        Elements linksOnPage = document.select("#filmography > .filmo-category-section div[id^=actor]");
+        for(Element link : linksOnPage){
+            links.add( link.select( "a[href^=/title/]" ).attr( "href" ) );
+        }
+        return links;
+    }
+
+    public List<Movie> getMoviesFromLinks(List<String> links, Class<?> movieType){
+        List<Movie> movies = new ArrayList<Movie>();
+        DataManager dataManager = this;
+        CountDownLatch latch= new CountDownLatch(links.size());
+        for (String link : links){
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Movie movie = (Movie) movieType.newInstance();
+                        System.out.println("Start downloading movie " + link);
+                        movie.downloadMovieInfo(dataManager, ("http://www.imdb.com" + link));
+                        System.out.println("Finish downloading movie " + link);
+                        movies.add(movie);
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    latch.countDown();
+                }
+            });
+            thread.start();
+        }
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return movies;
     }
 }
