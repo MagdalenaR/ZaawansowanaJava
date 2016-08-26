@@ -1,5 +1,9 @@
 package ZZPJ.Project.Model;
 
-public abstract class MovieDecorator extends Movie {
-    public abstract void downloadMovieInfo(String urlForMovie);
+public abstract class MovieDecorator implements Movie {
+    protected Movie movie;
+
+    public MovieDecorator(Movie movie){
+        this.movie = movie;
+    }
 }

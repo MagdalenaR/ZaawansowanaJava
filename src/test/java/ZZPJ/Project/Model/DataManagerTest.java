@@ -2,6 +2,7 @@ package ZZPJ.Project.Model;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -178,11 +179,13 @@ public class DataManagerTest {
 
     @Test
     public void getActorMoviesMockTest(){
-
+        System.out.print("not implemented");
+        Assert.fail();
     }
 
     @Test
     public void getActorMoviesTest(){
-
+        System.out.print("not implemented");
+        Assert.fail();
     }
 }
