@@ -93,7 +93,7 @@ public class DataManager {
         return birth;
     }
 
-    public List<Movie> getActorMovies(Document document, Class<?> movieType){
+    public List<Movie> getActorMovies(Document document, Class movieType){
         List<String> links = getActorMoviesLinks(document);
         List<Movie> movies = getMoviesFromLinks(links,movieType);
         return  movies;
@@ -108,7 +108,7 @@ public class DataManager {
         return links;
     }
 
-    public List<Movie> getMoviesFromLinks(List<String> links, final Class<?> movieType){
+    public List<Movie> getMoviesFromLinks(List<String> links, final Class movieType){
         final List<Movie> movies = new ArrayList<Movie>();
         final DataManager dataManager = this;
         final CountDownLatch latch= new CountDownLatch(links.size());
