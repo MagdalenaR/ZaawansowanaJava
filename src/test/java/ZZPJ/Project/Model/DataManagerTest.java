@@ -207,7 +207,7 @@ public class DataManagerTest {
     @Test
     public void getMoviesFromLinksTest(){
         DataManager dataManager = mock(DataManager.class);
-        when(dataManager.getMoviesFromLinks(anyListOf(String.class),any())).thenCallRealMethod();
+        when(dataManager.getMoviesFromLinks(anyListOf(String.class),any(Class.class))).thenCallRealMethod();
         List<Movie> result = dataManager.getMoviesFromLinks(new ArrayList<String>(), MovieBasic.class);
         assertThat(result).isEmpty();
     }
