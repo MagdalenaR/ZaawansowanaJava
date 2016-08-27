@@ -217,7 +217,7 @@ public class DataManagerTest {
         DataManager dataManager = mock(DataManager.class);
         Document doc = getDocumenFromFile(actorTestPath);
         when(dataManager.getActorMovies(doc,MovieBasic.class)).thenCallRealMethod();
-        when(dataManager.getMoviesFromLinks(any(),any())).thenReturn(new ArrayList<Movie>());
+        when(dataManager.getMoviesFromLinks(anyListOf(String.class),any(Class.class))).thenReturn(new ArrayList<Movie>());
 
         assertThat(dataManager.getActorMovies(doc,MovieBasic.class)).isEmpty();
     }
