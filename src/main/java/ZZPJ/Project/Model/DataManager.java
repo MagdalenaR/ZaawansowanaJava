@@ -108,11 +108,11 @@ public class DataManager {
         return links;
     }
 
-    public List<Movie> getMoviesFromLinks(List<String> links, Class<?> movieType){
-        List<Movie> movies = new ArrayList<Movie>();
-        DataManager dataManager = this;
-        CountDownLatch latch= new CountDownLatch(links.size());
-        for (String link : links){
+    public List<Movie> getMoviesFromLinks(List<String> links, final Class<?> movieType){
+        final List<Movie> movies = new ArrayList<Movie>();
+        final DataManager dataManager = this;
+        final CountDownLatch latch= new CountDownLatch(links.size());
+        for (final String link : links){
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
