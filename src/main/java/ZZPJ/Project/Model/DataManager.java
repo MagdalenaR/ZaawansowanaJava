@@ -16,6 +16,8 @@ import java.util.concurrent.CountDownLatch;
 
 public class DataManager {
 
+    private static final String MOST_POPULAR_MOVIES_URL = "http://www.imdb.com/chart/moviemeter?ref_=nv_mv_mpm_8";
+
     public Document downloadDocument(String url){
         Document document = new Document(url);
         try {
@@ -137,5 +139,22 @@ public class DataManager {
             e.printStackTrace();
         }
         return movies;
+    }
+
+    public List<Movie> getMostPopularMovies(Class movieType){
+        Document document = downloadDocument(MOST_POPULAR_MOVIES_URL);
+        List<String> links = getMostPopularMoviesLinks(document);
+        List<Movie> movies = getMoviesFromLinks(links,movieType);
+        return  movies;
+    }
+
+    public List<String> getMostPopularMoviesLinks(Document document) {
+        List<String> links = new ArrayList<String>();
+        Elements elements = document.select("table .titleColumn ");
+        for(Element element : elements){
+            String link = element.select( "a[href^=/title/]" ).attr( "href" );
+            links.add( link );
+        }
+        return links;
     }
 }
