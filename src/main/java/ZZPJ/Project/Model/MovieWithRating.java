@@ -22,4 +22,20 @@ public class MovieWithRating extends MovieDecorator {
         System.out.println("Rating value: " + this.rate);
         System.out.println("Rating count: " + this.ratingCount);
     }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public double getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(double ratingCount) {
+        this.ratingCount = ratingCount;
+    }
 }
