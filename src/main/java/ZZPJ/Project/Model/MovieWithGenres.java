@@ -22,4 +22,12 @@ public class MovieWithGenres extends MovieDecorator {
         movie.showMovieInformatation();
         System.out.println("Genres: " + Arrays.toString(this.genres.toArray()));
     }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
 }
