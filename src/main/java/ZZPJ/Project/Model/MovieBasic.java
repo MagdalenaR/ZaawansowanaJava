@@ -11,12 +11,16 @@ public class MovieBasic implements Movie {
     protected String title;
     protected Date releaseDate;
 
-    public void downloadMovieInfo(DataManager dataManager, String urlForMovie) {
+    public boolean downloadMovieInfo(DataManager dataManager, String urlForMovie) {
         Document document = dataManager.downloadDocument(urlForMovie);
-
-        this.id = dataManager.getPageId(document);
-        this.title = dataManager.getMovieTitle(document);
-        this.releaseDate = dataManager.getMovieReleaseYear(document);
+        if(document==null || document.equals("")){
+            return false;
+        } else {
+            this.id = dataManager.getPageId(document);
+            this.title = dataManager.getMovieTitle(document);
+            this.releaseDate = dataManager.getMovieReleaseYear(document);
+            return true;
+        }
     }
 
     public void showMovieInformatation() {
