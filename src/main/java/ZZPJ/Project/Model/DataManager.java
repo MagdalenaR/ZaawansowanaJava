@@ -7,6 +7,8 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,12 +121,21 @@ public class DataManager {
                 @Override
                 public void run() {
                     try {
-                        Movie movie = (Movie) movieType.newInstance();
-                        movie.downloadMovieInfo(dataManager, ("http://www.imdb.com" + link));
-                        movies.add(movie);
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
+                        Movie movie = (Movie) new MovieBasic();
+                        if(movieType.getName()!=MovieBasic.class.getName()){
+                            Class clazz = Class.forName(movieType.getName());
+                            Constructor constructor = clazz.getConstructor(Movie.class);
+                            movie = (Movie) constructor.newInstance(new MovieBasic());
+                        }
+                        System.out.println("start " + link);
+                        if (movie.downloadMovieInfo(dataManager, ("http://www.imdb.com" + link))){
+                            movies.add(movie);
+                            System.out.println("finish " + link);
+                        } else {
+                            System.out.println("failed "+ link);
+                        }
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                            | ClassNotFoundException | InvocationTargetException  e) {
                         e.printStackTrace();
                     }
                     latch.countDown();

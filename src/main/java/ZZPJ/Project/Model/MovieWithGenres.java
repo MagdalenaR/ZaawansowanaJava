@@ -12,10 +12,15 @@ public class MovieWithGenres extends MovieDecorator {
         super(movie);
     }
 
-    public void downloadMovieInfo(DataManager dataManager, String urlForMovie) {
-        movie.downloadMovieInfo(dataManager, urlForMovie);
+    public boolean downloadMovieInfo(DataManager dataManager, String urlForMovie) {
         Document document = dataManager.downloadDocument(urlForMovie);
-        this.genres = dataManager.getMovieGenres(document);
+        if(document==null || document.equals("")){
+            return false;
+        } else {
+            movie.downloadMovieInfo(dataManager, urlForMovie);
+            this.genres = dataManager.getMovieGenres(document);
+            return true;
+        }
     }
 
     public void showMovieInformatation() {
