@@ -14,9 +14,9 @@ public class MostPopularMoviesCrawler {
         this.dataManager = dataManager;
     }
 
-    //public List<Movie> downloadMovies(Class movieType){
-    //    return dataManager.getMostPopularMovies(movieType);
-    //}
+    public List<Movie> downloadMovies(Class movieType){
+        return dataManager.getMostPopularMovies(movieType);
+    }
 
     public Map<String,Integer> countNumberOfOccurrencesOfGenres(List<Movie> movies){
         Map<String, Integer> occurrencesOfGenres = new HashMap<String, Integer>();
