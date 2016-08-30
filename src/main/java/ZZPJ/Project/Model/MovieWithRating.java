@@ -10,11 +10,16 @@ public class MovieWithRating extends MovieDecorator {
         super(movie);
     }
 
-    public void downloadMovieInfo(DataManager dataManager, String urlForMovie) {
-        movie.downloadMovieInfo(dataManager, urlForMovie);
+    public boolean downloadMovieInfo(DataManager dataManager, String urlForMovie) {
         Document document = dataManager.downloadDocument(urlForMovie);
-        this.rate = dataManager.getMovieRate(document);
-        this.ratingCount = dataManager.getMovieRatingCount(document);
+        if(document==null || document.equals("")){
+            return false;
+        } else {
+            movie.downloadMovieInfo(dataManager, urlForMovie);
+            this.rate = dataManager.getMovieRate(document);
+            this.ratingCount = dataManager.getMovieRatingCount(document);
+            return true;
+        }
     }
 
     public void showMovieInformatation() {
