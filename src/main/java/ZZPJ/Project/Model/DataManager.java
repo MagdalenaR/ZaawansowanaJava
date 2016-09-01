@@ -21,7 +21,7 @@ public class DataManager {
     public Document downloadDocument(String url){
         Document document = new Document(url);
         try {
-            document = Jsoup.connect(url).timeout(100*1000).get();
+          document = Jsoup.connect(url).userAgent("Mozilla Chrome Safari Opera").timeout(100*1000).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,5 +148,22 @@ public class DataManager {
             e.printStackTrace();
         }
         return movies;
+    }
+    
+    public List<String> getBirthDateActorsLinks(String dateOfActorBirth) {
+      List<String> links = new ArrayList<String>();
+      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      try {
+        Date birth = format.parse( dateOfActorBirth );
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+      Document document = downloadDocument("http://www.imdb.com/search/name?birth_date=" + dateOfActorBirth + "," + dateOfActorBirth);
+      Elements linksOnPage = document.select("#main > .results td[class^=name]"); 
+      for (Element element : linksOnPage) { 
+        String link = "http://www.imdb.com" + element.select("a[href^=/name/]").attr("href");
+        links.add(link);
+      }
+      return links;
     }
 }
