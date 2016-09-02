@@ -166,4 +166,21 @@ public class DataManager {
       }
       return links;
     }
-}
+    
+    public List<Actor> getActorsFromLinks(List<String> links) {
+      final List<Actor> actors = new ArrayList<Actor>();
+      final DataManager dataManager = this;
+      for (final String link : links) {
+        Actor actor = new Actor();
+        System.out.println("start " + link);
+        if(actor.downloadActorInfo( dataManager, ("http://www.imdb.com" + link) )) {
+          actors.add( actor );
+          System.out.println("finish " + link);
+        } else {
+          System.out.println("failed " + link);
+        }
+        }
+      return actors;
+      }
+ }
+

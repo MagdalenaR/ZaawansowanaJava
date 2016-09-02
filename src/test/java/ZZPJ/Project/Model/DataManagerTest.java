@@ -236,4 +236,15 @@ public class DataManagerTest {
       assertThat(dataManager.getBirthDateActorsLinks(new String(""))).isEqualTo(links);
     }
     
+    @Test
+    public void getActorsFromLinksTest() {
+      DataManager dataManager = new DataManager();
+      assertThat(dataManager.getActorsFromLinks(dataManager.getBirthDateActorsLinks("1994-05-21")).get(0).getName())
+          .isEqualTo("Tom Daley");
+      assertThat(dataManager.getActorsFromLinks(dataManager.getBirthDateActorsLinks("1994-05-21")).get(1).getName())
+          .isEqualTo("Cheyenne Maxey");
+      assertThat(dataManager.getActorsFromLinks(dataManager.getBirthDateActorsLinks("1994-05-21")).size())
+          .isEqualTo(2);
+    }
+    
 }
