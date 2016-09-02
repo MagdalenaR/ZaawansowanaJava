@@ -30,17 +30,28 @@ public class Actor {
         }
     }
 
-    public void downloadActorInfo(DataManager dataManager, String urlForActor, Class<?> movieType){
+    public boolean downloadActorInfo(DataManager dataManager, String urlForActor, Class<?> movieType){
         Document document = dataManager.downloadDocument(urlForActor);
+        if (document == null || document.equals("")) {
+          return false;
+        } else {
         this.id = dataManager.getPageId(document);
         this.name = dataManager.getActorName(document);
         this.birthDate = dataManager.getActorBirthDate(document);
         this.movies = dataManager.getActorMovies(document,movieType);
+        return true;
+        }
     }
 
 
-    public void downloadActorInfo(DataManager dataManager, String urlForActor){
-        downloadActorInfo(dataManager,urlForActor,MovieBasic.class);
+    public boolean downloadActorInfo(DataManager dataManager, String urlForActor){
+      Document document = dataManager.downloadDocument(urlForActor);
+      if (document == null || document.equals("")) {
+        return false;
+      } else {  
+      downloadActorInfo(dataManager,urlForActor,MovieBasic.class);
+      return true;
+      }
     }
 
     public String getId() {
