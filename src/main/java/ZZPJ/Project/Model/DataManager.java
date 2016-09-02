@@ -161,7 +161,7 @@ public class DataManager {
       Document document = downloadDocument("http://www.imdb.com/search/name?birth_date=" + dateOfActorBirth + "," + dateOfActorBirth);
       Elements linksOnPage = document.select("#main > .results td[class^=name]"); 
       for (Element element : linksOnPage) { 
-        String link = "http://www.imdb.com" + element.select("a[href^=/name/]").attr("href");
+        String link = element.select("a[href^=/name/]").attr("href");
         links.add(link);
       }
       return links;
@@ -173,14 +173,14 @@ public class DataManager {
       for (final String link : links) {
         Actor actor = new Actor();
         System.out.println("start " + link);
-        if(actor.downloadActorInfo( dataManager, ("http://www.imdb.com" + link) )) {
-          actors.add( actor );
+        if (actor.downloadActorInfo(dataManager, ("http://www.imdb.com" + link))) {
+          actors.add(actor);
           System.out.println("finish " + link);
         } else {
           System.out.println("failed " + link);
         }
-        }
-      return actors;
       }
+      return actors;
+    }
  }
 
