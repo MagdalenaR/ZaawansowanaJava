@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MostPopularMoviesCrawler {
-    DataManager dataManager;
+    private DataManager dataManager;
 
     public MostPopularMoviesCrawler(DataManager dataManager){
         this.dataManager = dataManager;

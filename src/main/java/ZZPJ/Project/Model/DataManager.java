@@ -23,8 +23,12 @@ public class DataManager {
     public Document downloadDocument(String url){
         Document document = new Document(url);
         try {
-            document = Jsoup.connect(url).timeout(100*1000).get();
+            document = Jsoup.connect(url)
+                    .userAgent("Mozilla Chrome Safari Opera")
+                    .timeout(100*1000)
+                    .get();
         } catch (IOException e) {
+            document = null;
             e.printStackTrace();
         }
         return document;
@@ -36,8 +40,12 @@ public class DataManager {
 
     public String getMovieTitle(Document document){
         Element element = document.select( "h1[itemprop=name]" ).first( );
-        String title = ((TextNode) element.childNodes().get( 0 )).text();
-        return title.substring(0,title.length()-1);
+        String title = null;
+        if(element != null){
+            title = ((TextNode) element.childNodes().get( 0 )).text();
+            title = title.substring(0,title.length()-1);
+        }
+        return title;
     }
 
     public Date getMovieReleaseYear(Document document){
