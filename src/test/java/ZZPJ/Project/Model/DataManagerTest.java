@@ -222,4 +222,18 @@ public class DataManagerTest {
         assertThat(dataManager.getActorMovies(doc,MovieBasic.class)).isEmpty();
     }
 
+    @Test
+    public void getBirthDateActorsLinksTest() {
+      DataManager dataManager = new DataManager();
+      assertThat(dataManager.getBirthDateActorsLinks("1994-05-21")).hasSize(2);
+    }
+
+    @Test
+    public void getBirthDateActorsLinksMockTest() {
+      List<String> links = new ArrayList<String>();
+      DataManager dataManager = mock(DataManager.class);
+      when(dataManager.getBirthDateActorsLinks(any(String.class))).thenReturn(links);
+      assertThat(dataManager.getBirthDateActorsLinks(new String(""))).isEqualTo(links);
+    }
+    
 }
