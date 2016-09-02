@@ -24,6 +24,7 @@ public class DataManagerTest {
 
     private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
     private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
+    private String searchResultPagePath = "src/test/java/ZZPJ/Project/TestFiles/SearchResultPageTest.html";
 
     private Document getDocumenFromFile(String fileName){
         File file = new File(fileName);
@@ -220,6 +221,23 @@ public class DataManagerTest {
         when(dataManager.getMoviesFromLinks(anyListOf(String.class),any(Class.class))).thenReturn(new ArrayList<Movie>());
 
         assertThat(dataManager.getActorMovies(doc,MovieBasic.class)).isEmpty();
+    }
+
+    @Test
+    public void createSearchedLinkCorrect(){
+        DataManager dataManager = new DataManager();
+        String link = dataManager.createSearchedLink("Brad pitt");
+        assertEquals("http://www.imdb.com/find?q=Brad+pitt",link);
+    }
+
+    @Test
+    public void findActorLinkTest(){
+        DataManager dataManager = mock(DataManager.class);
+        Document doc = getDocumenFromFile(searchResultPagePath);
+        when(dataManager.downloadDocument(anyString())).thenReturn(doc);
+        when(dataManager.findActorLink("Brad Pitt")).thenCallRealMethod();
+        String actorLink = dataManager.findActorLink("Brad Pitt");
+        assertThat(actorLink).startsWith("/name/nm0000093/");
     }
 
 }

@@ -149,4 +149,22 @@ public class DataManager {
         }
         return movies;
     }
+
+    public String findActorLink(String actorName) {
+
+        String link = createSearchedLink(actorName);
+        Document document = downloadDocument(link);
+        if (document != null) {
+            Element element = document.select("table[class=findList] tr td[class=result_text]:contains(Act)").first();
+            String linkToActor = element.select("a[href^=/name/]").attr("href");
+            return linkToActor;
+        }
+        return null;
+    }
+
+    public String createSearchedLink(String searchedValue) {
+        searchedValue = searchedValue.replace(" ", "+");
+        return ("http://www.imdb.com/find?q=" + searchedValue);
+    }
+
 }
