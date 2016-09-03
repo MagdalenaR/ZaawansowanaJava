@@ -152,33 +152,52 @@ public class DataManager {
     
     public List<String> getBirthDateActorsLinks(String dateOfActorBirth) {
       List<String> links = new ArrayList<String>();
-      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+/*      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
       try {
         Date birth = format.parse( dateOfActorBirth );
       } catch (ParseException e) {
         e.printStackTrace();
+      } */
+      if(dateOfActorBirth.matches("\\d{4}-\\d{2}-\\d{2}")) {
+        Document document = downloadDocument("http://www.imdb.com/search/name?birth_date=" + dateOfActorBirth + "," + dateOfActorBirth);
+        if (document != null) {
+          Elements linksOnPage = document.select("#main > .results td[class^=name]"); 
+          for (Element element : linksOnPage) { 
+            String link = element.select("a[href^=/name/]").attr("href");
+            links.add(link);
+          }
+        }
+        else return null;
       }
-      Document document = downloadDocument("http://www.imdb.com/search/name?birth_date=" + dateOfActorBirth + "," + dateOfActorBirth);
-      Elements linksOnPage = document.select("#main > .results td[class^=name]"); 
-      for (Element element : linksOnPage) { 
-        String link = element.select("a[href^=/name/]").attr("href");
-        links.add(link);
-      }
+      else System.out.println( "bad date format" );
       return links;
     }
     
     public List<Actor> getActorsFromLinks(List<String> links) {
       final List<Actor> actors = new ArrayList<Actor>();
       final DataManager dataManager = this;
-      for (final String link : links) {
-        Actor actor = new Actor();
-        System.out.println("start " + link);
-        if (actor.downloadActorInfo(dataManager, ("http://www.imdb.com" + link))) {
-          actors.add(actor);
-          System.out.println("finish " + link);
-        } else {
-          System.out.println("failed " + link);
-        }
+      final CountDownLatch latch= new CountDownLatch(links.size());
+      for(final String link : links) {
+        Thread thread = new Thread(new Runnable() {
+          @Override
+          public void run() {
+            Actor actor = new Actor();
+            System.out.println("start " + link);
+            if (actor.downloadActorInfo(dataManager, ("http://www.imdb.com" + link))) {
+              actors.add(actor);
+              System.out.println("finish " + link);
+            } else {
+              System.out.println("failed " + link);
+            }
+            latch.countDown();
+          }
+        });
+        thread.start();
+      }
+      try {
+        latch.await( );
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
       return actors;
     }
