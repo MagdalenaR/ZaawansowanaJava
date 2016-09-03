@@ -12,12 +12,16 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ActorTest {
     @Mock
     public DataManager mockedDataManager;
+
+    @Mock
+    public Document mockedDocument;
 
     @InjectMocks
     public Actor sutActor;
@@ -30,6 +34,7 @@ public class ActorTest {
     @Test
     public void downloadActorInfoTest(){
         Date date = new Date();
+        when(mockedDataManager.downloadDocument(anyString())).thenReturn(mockedDocument);
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("nm12345");
         when(mockedDataManager.getActorName(any(Document.class))).thenReturn("Leonardo DiCaprio");
         when(mockedDataManager.getActorBirthDate(any(Document.class))).thenReturn(date);
