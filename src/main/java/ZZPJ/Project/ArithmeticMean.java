@@ -1,4 +1,4 @@
-package ZZPJ.Project.Model;
+package ZZPJ.Project;
 
 import java.util.List;
 
