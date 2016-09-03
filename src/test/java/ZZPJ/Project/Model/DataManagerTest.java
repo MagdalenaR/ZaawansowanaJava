@@ -24,6 +24,7 @@ public class DataManagerTest {
 
     private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
     private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
+    private String topCelebsTestPath = "src/test/java/ZZPJ/Project/TestFiles/TopCelebsTest.html";
 
     private Document getDocumenFromFile(String fileName){
         File file = new File(fileName);
@@ -220,6 +221,16 @@ public class DataManagerTest {
         when(dataManager.getMoviesFromLinks(anyListOf(String.class),any(Class.class))).thenReturn(new ArrayList<Movie>());
 
         assertThat(dataManager.getActorMovies(doc,MovieBasic.class)).isEmpty();
+    }
+
+    @Test
+    public void getMostPopularCelebsLinksTest(){
+        DataManager mockedDataManager = mock(DataManager.class);
+        Document document = getDocumenFromFile(topCelebsTestPath);
+        when(mockedDataManager.downloadDocument(anyString())).thenReturn(document);
+        when(mockedDataManager.getMostPopularCelebsLinks()).thenCallRealMethod();
+        List<String> list = mockedDataManager.getMostPopularCelebsLinks();
+        assertEquals(50, list.size());
     }
 
 }

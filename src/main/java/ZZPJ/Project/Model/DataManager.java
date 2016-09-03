@@ -16,6 +16,8 @@ import java.util.concurrent.CountDownLatch;
 
 public class DataManager {
 
+    private static final String MOST_POPULAR_CELEBS_URL = "http://www.imdb.com/search/name?gender=male,female&ref_=nv_cel_m_3";
+
     public Document downloadDocument(String url){
         Document document = new Document(url);
         try {
@@ -137,5 +139,15 @@ public class DataManager {
             e.printStackTrace();
         }
         return movies;
+    }
+
+    public List<String> getMostPopularCelebsLinks(){
+        Document document = downloadDocument(MOST_POPULAR_CELEBS_URL);
+        List<String> linksToActors = new ArrayList<String>();
+        Elements elements = document.select("table.results td.name");
+        for(Element element : elements){
+            linksToActors.add(element.select("a[href^=/name/]").attr("href"));
+        }
+        return linksToActors;
     }
 }
