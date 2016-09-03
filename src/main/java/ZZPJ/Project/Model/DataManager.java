@@ -176,7 +176,7 @@ public class DataManager {
     public List<Actor> getActorsFromLinks(List<String> links) {
       final List<Actor> actors = new ArrayList<Actor>();
       final DataManager dataManager = this;
-      final CountDownLatch latch= new CountDownLatch(links.size());
+      final CountDownLatch latch = new CountDownLatch(links.size());
       for(final String link : links) {
         Thread thread = new Thread(new Runnable() {
           @Override
