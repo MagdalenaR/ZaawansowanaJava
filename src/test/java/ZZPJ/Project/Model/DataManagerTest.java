@@ -26,6 +26,7 @@ public class DataManagerTest {
 
     private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
     private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
+    private String topCelebsTestPath = "src/test/java/ZZPJ/Project/TestFiles/TopCelebsTest.html";
     private String searchResultPagePath = "src/test/java/ZZPJ/Project/TestFiles/SearchResultPageTest.html";
 
   private Document getDocumenFromFile( String fileName ) {
@@ -67,14 +68,13 @@ public class DataManagerTest {
     assertEquals( "tt0482571", dataManager.getPageId( doc ) );
   }
 
-  @Test
-  public void getMovieTitleMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getMovieTitle( any( Document.class ) ) )
-      .thenReturn( "Batman" );
-    Document document = new Document( "" );
-    assertEquals( "Batman", dataManager.getMovieTitle( document ) );
-  }
+    @Test
+    public void getMovieTitleMockTest(){
+        DataManager dataManager = mock(DataManager.class);
+        when(dataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
+        Document document = new Document("");
+        assertEquals("Batman",dataManager.getMovieTitle(document));
+    }
 
   @Test
   public void getMovieTitleTest( ) {
@@ -83,15 +83,14 @@ public class DataManagerTest {
     assertEquals( "Prestiz", dataManager.getMovieTitle( doc ) );
   }
 
-  @Test
-  public void getMovieReleaseYearMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    Date date = new Date( );
-    when( dataManager.getMovieReleaseYear( any( Document.class ) ) )
-      .thenReturn( date );
-    Document document = new Document( "" );
-    assertEquals( date, dataManager.getMovieReleaseYear( document ) );
-  }
+    @Test
+    public void getMovieReleaseYearMockTest(){
+        DataManager dataManager = mock(DataManager.class);
+        Date date = new Date();
+        when(dataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
+        Document document = new Document("");
+        assertEquals(date,dataManager.getMovieReleaseYear(document));
+    }
 
   @Test
   public void getMovieReleaseYearTest( ) {
@@ -118,14 +117,13 @@ public class DataManagerTest {
     assertEquals( 8.5, dataManager.getMovieRate( document ), 0.0 );
   }
 
-  @Test
-  public void getMovieRatingCountMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getMovieRatingCount( any( Document.class ) ) )
-      .thenReturn( 5.0 );
-    Document document = new Document( "" );
-    assertEquals( 5.0, dataManager.getMovieRatingCount( document ), 0.0 );
-  }
+    @Test
+    public void getMovieRatingCountMockTest(){
+        DataManager dataManager = mock(DataManager.class);
+        when(dataManager.getMovieRatingCount(any(Document.class))).thenReturn(5.0);
+        Document document = new Document("");
+        assertEquals(5.0,dataManager.getMovieRatingCount(document), 0.0);
+    }
 
   @Test
   public void getMovieRatingCountTest( ) {
@@ -292,5 +290,15 @@ public class DataManagerTest {
     assertThat( dataManager.getVotesOfTheHighestRatedMovies( "Horror" ).size( ) )
       .isEqualTo( 50 );
   }
+
+    @Test
+    public void getMostPopularCelebsLinksTest(){
+        DataManager mockedDataManager = mock(DataManager.class);
+        Document document = getDocumenFromFile(topCelebsTestPath);
+        when(mockedDataManager.downloadDocument(anyString())).thenReturn(document);
+        when(mockedDataManager.getMostPopularCelebsLinks()).thenCallRealMethod();
+        List<String> list = mockedDataManager.getMostPopularCelebsLinks();
+        assertEquals(50, list.size());
+    }
 
 }

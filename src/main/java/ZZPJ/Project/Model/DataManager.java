@@ -20,6 +20,8 @@ import java.util.concurrent.CountDownLatch;
 
 public class DataManager {
 
+    private static final String MOST_POPULAR_CELEBS_URL = "http://www.imdb.com/search/name?gender=male,female&ref_=nv_cel_m_3";
+
   public Document downloadDocument( String url ) {
     Document document = new Document( url );
     try {
@@ -90,17 +92,16 @@ public class DataManager {
     return document.select( "meta[property=og:title]" ).attr( "content" );
   }
 
-  public Date getActorBirthDate( Document document ) {
-    SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd" );
-    Date birth = null;
-    try {
-      birth = format
-        .parse( document.select( "time[itemprop=birthDate]" ).attr( "datetime" ) );
-    } catch ( ParseException e ) {
-      e.printStackTrace( );
+    public Date getActorBirthDate(Document document){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date birth = null;
+        try {
+            birth = format.parse( document.select("time[itemprop=birthDate]").attr("datetime") );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return birth;
     }
-    return birth;
-  }
 
   public List<Movie> getActorMovies( Document document, Class movieType ) {
     List<String> links = getActorMoviesLinks( document );
@@ -247,4 +248,13 @@ public class DataManager {
         return ("http://www.imdb.com/find?q=" + searchedValue);
     }
 
+    public List<String> getMostPopularCelebsLinks(){
+        Document document = downloadDocument(MOST_POPULAR_CELEBS_URL);
+        List<String> linksToActors = new ArrayList<String>();
+        Elements elements = document.select("table.results td.name");
+        for(Element element : elements){
+            linksToActors.add(element.select("a[href^=/name/]").attr("href"));
+        }
+        return linksToActors;
+    }
 }
