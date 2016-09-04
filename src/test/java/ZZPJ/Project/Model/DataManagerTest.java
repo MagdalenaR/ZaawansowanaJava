@@ -24,8 +24,9 @@ import static org.mockito.Mockito.*;
 
 public class DataManagerTest {
 
-  private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
-  private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
+    private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
+    private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
+    private String searchResultPagePath = "src/test/java/ZZPJ/Project/TestFiles/SearchResultPageTest.html";
 
   private Document getDocumenFromFile( String fileName ) {
     File file = new File( fileName );
@@ -133,18 +134,18 @@ public class DataManagerTest {
     assertEquals( 845705, dataManager.getMovieRatingCount( document ), 0.0 );
   }
 
-  @Test
-  public void getMovieGenresMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    List<String> genres = new ArrayList<String>( );
-    genres.add( "action" );
-    genres.add( "biography" );
-    when( dataManager.getMovieGenres( any( Document.class ) ) ).thenReturn( genres );
-    Document document = new Document( "" );
-    List<String> result = dataManager.getMovieGenres( document );
-    assertThat( result.get( 0 ) ).isEqualTo( "action" );
-    assertThat( result.get( 1 ) ).isEqualTo( "biography" );
-  }
+    @Test
+    public void getMovieGenresMockTest(){
+        DataManager dataManager = mock(DataManager.class);
+        List<String> genres = new ArrayList<String>();
+        genres.add("action");
+        genres.add("biography");
+        when(dataManager.getMovieGenres(any(Document.class))).thenReturn(genres);
+        Document document = new Document("");
+        List<String> result = dataManager.getMovieGenres(document);
+        assertThat(result.get(0)).isEqualTo("action");
+        assertThat(result.get(1)).isEqualTo("biography");
+    }
 
   @Test
   public void getMovieGenresTest( ) {
@@ -234,6 +235,23 @@ public class DataManagerTest {
 
     assertThat( dataManager.getActorMovies( doc, MovieBasic.class ) ).isEmpty( );
   }
+
+    @Test
+    public void createSearchedLinkCorrect(){
+        DataManager dataManager = new DataManager();
+        String link = dataManager.createSearchedLink("Brad pitt");
+        assertEquals("http://www.imdb.com/find?q=Brad+pitt",link);
+    }
+
+    @Test
+    public void findActorLinkTest(){
+        DataManager dataManager = mock(DataManager.class);
+        Document doc = getDocumenFromFile(searchResultPagePath);
+        when(dataManager.downloadDocument(anyString())).thenReturn(doc);
+        when(dataManager.findActorLink("Brad Pitt")).thenCallRealMethod();
+        String actorLink = dataManager.findActorLink("Brad Pitt");
+        assertThat(actorLink).startsWith("/name/nm0000093/");
+    }
 
   @Test
   public void getBirthDateActorsLinksTest( ) {

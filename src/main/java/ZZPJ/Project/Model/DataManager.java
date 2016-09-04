@@ -118,40 +118,37 @@ public class DataManager {
     return links;
   }
 
-  public List<Movie> getMoviesFromLinks( List<String> links,
-      final Class movieType ) {
-    final List<Movie> movies = new ArrayList<Movie>( );
-    final DataManager dataManager = this;
-    final CountDownLatch latch = new CountDownLatch( links.size( ) );
-    for ( final String link : links ) {
-      Thread thread = new Thread( new Runnable( ) {
-        @Override
-        public void run( ) {
-          try {
-            Movie movie = (Movie) new MovieBasic( );
-            if ( movieType.getName( ) != MovieBasic.class.getName( ) ) {
-              Class clazz = Class.forName( movieType.getName( ) );
-              Constructor constructor = clazz.getConstructor( Movie.class );
-              movie = (Movie) constructor.newInstance( new MovieBasic( ) );
-            }
-            System.out.println( "start " + link );
-            if ( movie.downloadMovieInfo( dataManager,
-                ( "http://www.imdb.com" + link ) ) ) {
-              movies.add( movie );
-              System.out.println( "finish " + link );
-            } else {
-              System.out.println( "failed " + link );
-            }
-          } catch ( InstantiationException | IllegalAccessException
-              | NoSuchMethodException | ClassNotFoundException
-              | InvocationTargetException e ) {
-            e.printStackTrace( );
-          }
-          latch.countDown( );
+    public List<Movie> getMoviesFromLinks(List<String> links, final Class movieType){
+        final List<Movie> movies = new ArrayList<Movie>();
+        final DataManager dataManager = this;
+        final CountDownLatch latch= new CountDownLatch(links.size());
+        for (final String link : links){
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Movie movie = (Movie) new MovieBasic();
+                        if(movieType.getName()!=MovieBasic.class.getName()){
+                            Class clazz = Class.forName(movieType.getName());
+                            Constructor constructor = clazz.getConstructor(Movie.class);
+                            movie = (Movie) constructor.newInstance(new MovieBasic());
+                        }
+                        System.out.println("start " + link);
+                        if (movie.downloadMovieInfo(dataManager, ("http://www.imdb.com" + link))){
+                            movies.add(movie);
+                            System.out.println("finish " + link);
+                        } else {
+                            System.out.println("failed "+ link);
+                        }
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                            | ClassNotFoundException | InvocationTargetException  e) {
+                        e.printStackTrace();
+                    }
+                    latch.countDown();
+                }
+            });
+            thread.start();
         }
-      } );
-      thread.start( );
-    }
 
     try {
       latch.await( );
@@ -232,5 +229,22 @@ public class DataManager {
     }
     return votes;
   }
+
+    public String findActorLink(String actorName) {
+
+        String link = createSearchedLink(actorName);
+        Document document = downloadDocument(link);
+        if (document != null) {
+            Element element = document.select("table[class=findList] tr td[class=result_text]:contains(Act)").first();
+            String linkToActor = element.select("a[href^=/name/]").attr("href");
+            return linkToActor;
+        }
+        return null;
+    }
+
+    public String createSearchedLink(String searchedValue) {
+        searchedValue = searchedValue.replace(" ", "+");
+        return ("http://www.imdb.com/find?q=" + searchedValue);
+    }
 
 }
