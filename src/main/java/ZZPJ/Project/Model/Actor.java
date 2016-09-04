@@ -25,9 +25,11 @@ public class Actor {
         System.out.println("Id: " + id);
         System.out.println("Name: " + name);
         System.out.println("Birth date: " + birth);
-        System.out.println("Movies:");
-        for (Movie movie : movies) {
-            movie.showMovieInformatation();
+        if(movies.size()!=0){
+            System.out.println("Movies:");
+            for (Movie movie : movies) {
+                movie.showMovieInformatation();
+            }
         }
     }
 
@@ -39,7 +41,9 @@ public class Actor {
             this.id = crawler.getPageId(document);
             this.name = crawler.getActorName(document);
             this.birthDate = crawler.getActorBirthDate(document);
-            this.movies = crawler.getActorMovies(document, movieType);
+            if(movieType!=null){
+                this.movies = crawler.getActorMovies(document, movieType);
+            }
             return true;
         }
     }

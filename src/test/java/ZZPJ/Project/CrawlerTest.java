@@ -269,7 +269,7 @@ public class CrawlerTest {
     public void getActorsFromLinksTest() {
         Crawler crawler = new Crawler();
         assertThat(crawler
-                .getActorsFromLinks(crawler.getBirthDateActorsLinks("1994-05-21"))
+                .getActorsFromLinks(crawler.getBirthDateActorsLinks("1994-05-21"), null)
                 .size()).isEqualTo(2);
     }
 

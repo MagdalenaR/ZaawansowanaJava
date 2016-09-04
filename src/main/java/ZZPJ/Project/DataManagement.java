@@ -18,19 +18,23 @@ public class DataManagement {
     }
 
     public int getActorAge(Actor actor) {
-        Date birthDate = actor.getBirthDate();
-        Calendar cal = Calendar.getInstance();
-        int currentYear = cal.get(Calendar.YEAR);
-        cal.setTime(birthDate);
-        int birthYear = cal.get(Calendar.YEAR);
-        int age = currentYear - birthYear;
-        return age;
+        if(actor.getBirthDate()!=null){
+            Date birthDate = actor.getBirthDate();
+            Calendar cal = Calendar.getInstance();
+            int currentYear = cal.get(Calendar.YEAR);
+            cal.setTime(birthDate);
+            int birthYear = cal.get(Calendar.YEAR);
+            int age = currentYear - birthYear;
+            return age;
+        } else {
+            return -1;
+        }
     }
 
     public Map<String, Integer> countNumberOfActorsInAge(List<Actor> actorList) {
-        Map<String, Integer> numberOfActor = new HashMap<String, Integer>();
+        Map<String, Integer> numberOfActor = new LinkedHashMap<String, Integer>();
 
-        for (int i = 0; i < 80; i += 10) {
+        for (int i = 0; i < 70; i += 10) {
             numberOfActor.put(i + "-" + (i + 10), countNumberOfActorsInAgeRange(i, i + 10, actorList));
         }
 

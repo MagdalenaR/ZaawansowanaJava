@@ -153,8 +153,9 @@ public class Crawler {
                     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
                             | ClassNotFoundException | InvocationTargetException e) {
                         e.printStackTrace();
+                    } finally {
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             });
             thread.start();
@@ -187,7 +188,7 @@ public class Crawler {
         return links;
     }
 
-    public List<Actor> getActorsFromLinks(List<String> links) {
+    public List<Actor> getActorsFromLinks(List<String> links, Class movieType) {
         final List<Actor> actors = new ArrayList<Actor>();
         final Crawler crawler = this;
         final CountDownLatch latch = new CountDownLatch(links.size());
@@ -197,8 +198,7 @@ public class Crawler {
                 public void run() {
                     Actor actor = new Actor();
                     System.out.println("start " + link);
-                    if (actor.downloadActorInfo(crawler,
-                            ("http://www.imdb.com" + link))) {
+                    if (actor.downloadActorInfo(crawler, ("http://www.imdb.com" + link), movieType)) {
                         actors.add(actor);
                         System.out.println("finish " + link);
                     } else {
@@ -247,7 +247,7 @@ public class Crawler {
         if (document != null) {
             Element element = document.select("table[class=findList] tr td[class=result_text]:contains(Act)").first();
             String linkToActor = element.select("a[href^=/name/]").attr("href");
-            return linkToActor;
+            return "http://www.imdb.com"+linkToActor;
         }
         return null;
     }
@@ -282,5 +282,11 @@ public class Crawler {
             links.add(link);
         }
         return links;
+    }
+
+    public List<Actor> getMostPopularActors() {
+        List<String> links = getMostPopularCelebsLinks();
+        List<Actor> actors = getActorsFromLinks(links,null);
+        return actors;
     }
 }
