@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 public class MostPopularMoviesCrawler {
-    private DataManager dataManager;
+    private Crawler crawler;
 
-    public MostPopularMoviesCrawler(DataManager dataManager){
-        this.dataManager = dataManager;
+    public MostPopularMoviesCrawler(Crawler crawler){
+        this.crawler = crawler;
     }
 
     public List<Movie> downloadMovies(Class movieType){
-        return dataManager.getMostPopularMovies(movieType);
+        return crawler.getMostPopularMovies(movieType);
     }
 
     public Map<String,Integer> countNumberOfOccurrencesOfGenres(List<Movie> movies){

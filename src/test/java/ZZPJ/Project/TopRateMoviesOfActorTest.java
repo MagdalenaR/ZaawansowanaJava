@@ -32,14 +32,14 @@ public class TopRateMoviesOfActorTest {
 
     @Test
     public void sortMoviesByRatingValueTest(){
-        TopRatedMoviesOfActor sutTopRatedMoviesOfActor = new TopRatedMoviesOfActor(new DataManager());
+        TopRatedMoviesOfActor sutTopRatedMoviesOfActor = new TopRatedMoviesOfActor(new Crawler());
         movies = sutTopRatedMoviesOfActor.sortMoviesByRatingValue(movies);
         assertThat(movies).containsSubsequence(movie3, movie6, movie2, movie4, movie5, movie1);
     }
 
     @Test
     public void topXBestRatedMoviesOfActor(){
-        TopRatedMoviesOfActor topRatedMoviesOfActor = new TopRatedMoviesOfActor(new DataManager());
+        TopRatedMoviesOfActor topRatedMoviesOfActor = new TopRatedMoviesOfActor(new Crawler());
         List<Movie> result = topRatedMoviesOfActor.topNBestRatedMoviesOfActor(3,movies);
         assertThat(result).isSortedAccordingTo(new MovieRatingValueComparator());
         assertThat(result).hasSize(3);
@@ -48,7 +48,7 @@ public class TopRateMoviesOfActorTest {
 
     @Test
     public void topXBestRatedMoviesOfActorTest2(){
-        TopRatedMoviesOfActor topRatedMoviesOfActor = new TopRatedMoviesOfActor(new DataManager());
+        TopRatedMoviesOfActor topRatedMoviesOfActor = new TopRatedMoviesOfActor(new Crawler());
         List<Movie> result = topRatedMoviesOfActor.topNBestRatedMoviesOfActor(8,movies);
         assertThat(result).isSortedAccordingTo(new MovieRatingValueComparator());
         assertThat(result).hasSize(6);
@@ -57,7 +57,7 @@ public class TopRateMoviesOfActorTest {
 
     @Test
     public void getNFirstElementsTest(){
-        TopRatedMoviesOfActor topRateMoviesOfActor = new TopRatedMoviesOfActor(new DataManager());
+        TopRatedMoviesOfActor topRateMoviesOfActor = new TopRatedMoviesOfActor(new Crawler());
         List<Movie> result = topRateMoviesOfActor.getNFirstElements(4,movies);
         assertThat(result).hasSize(4);
     }

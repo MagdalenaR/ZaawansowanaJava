@@ -24,7 +24,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class MostPopularMoviesTest {
 
     @Mock
-    DataManager dataManager;
+    Crawler crawler;
     @Spy
     @InjectMocks
     MostPopularMoviesCrawler mostPopularMoviesCrawler;

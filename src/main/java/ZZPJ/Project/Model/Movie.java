@@ -1,6 +1,8 @@
 package ZZPJ.Project.Model;
 
+import ZZPJ.Project.Crawler;
+
 public interface Movie {
-    boolean downloadMovieInfo(DataManager dataManager, String urlForMovie);
+    boolean downloadMovieInfo(Crawler crawler, String urlForMovie);
     void showMovieInformatation();
 }

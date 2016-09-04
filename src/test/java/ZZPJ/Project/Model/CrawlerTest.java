@@ -1,11 +1,9 @@
 package ZZPJ.Project.Model;
 
+import ZZPJ.Project.Crawler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Assert;
 import org.junit.Test;
-
-import ZZPJ.Project.EnumGenre;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +20,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.*;
 
-public class DataManagerTest {
+public class CrawlerTest {
 
     private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
     private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
@@ -43,118 +41,118 @@ public class DataManagerTest {
 
   @Test( expected = IllegalArgumentException.class )
   public void downloadDocumentExceptionTest( ) {
-    DataManager dataManager = new DataManager( );
-    dataManager.downloadDocument( "" );
+    Crawler crawler = new Crawler( );
+    crawler.downloadDocument( "" );
   }
 
   @Test
   public void downloadDocumentTest( ) {
     String url = "http://www.imdb.com/name/nm0000288/";
-    DataManager dataManager = new DataManager( );
-    assertThat( dataManager.downloadDocument( url ) ).isNotNull( );
+    Crawler crawler = new Crawler( );
+    assertThat( crawler.downloadDocument( url ) ).isNotNull( );
   }
 
   @Test
   public void getPageIdMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getPageId( any( Document.class ) ) ).thenReturn( "tt12345" );
+    Crawler crawler = mock( Crawler.class );
+    when( crawler.getPageId( any( Document.class ) ) ).thenReturn( "tt12345" );
     Document document = new Document( "" );
-    assertEquals( "tt12345", dataManager.getPageId( document ) );
+    assertEquals( "tt12345", crawler.getPageId( document ) );
   }
 
   @Test
   public void getPageIdTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document doc = getDocumenFromFile( movieTestPath );
-    assertEquals( "tt0482571", dataManager.getPageId( doc ) );
+    assertEquals( "tt0482571", crawler.getPageId( doc ) );
   }
 
     @Test
     public void getMovieTitleMockTest(){
-        DataManager dataManager = mock(DataManager.class);
-        when(dataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
+        Crawler crawler = mock(Crawler.class);
+        when(crawler.getMovieTitle(any(Document.class))).thenReturn("Batman");
         Document document = new Document("");
-        assertEquals("Batman",dataManager.getMovieTitle(document));
+        assertEquals("Batman", crawler.getMovieTitle(document));
     }
 
   @Test
   public void getMovieTitleTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document doc = getDocumenFromFile( movieTestPath );
-    assertEquals( "Prestiz", dataManager.getMovieTitle( doc ) );
+    assertEquals( "Prestiz", crawler.getMovieTitle( doc ) );
   }
 
     @Test
     public void getMovieReleaseYearMockTest(){
-        DataManager dataManager = mock(DataManager.class);
+        Crawler crawler = mock(Crawler.class);
         Date date = new Date();
-        when(dataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
+        when(crawler.getMovieReleaseYear(any(Document.class))).thenReturn(date);
         Document document = new Document("");
-        assertEquals(date,dataManager.getMovieReleaseYear(document));
+        assertEquals(date, crawler.getMovieReleaseYear(document));
     }
 
   @Test
   public void getMovieReleaseYearTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document document = getDocumenFromFile( movieTestPath );
     Format formatter = new SimpleDateFormat( "yyyy" );
-    Date date = dataManager.getMovieReleaseYear( document );
+    Date date = crawler.getMovieReleaseYear( document );
     String result = formatter.format( date );
     assertEquals( "2007", result );
   }
 
   @Test
   public void getMovieRateMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getMovieRate( any( Document.class ) ) ).thenReturn( 5.0 );
+    Crawler crawler = mock( Crawler.class );
+    when( crawler.getMovieRate( any( Document.class ) ) ).thenReturn( 5.0 );
     Document document = new Document( "" );
-    assertEquals( 5.0, dataManager.getMovieRate( document ), 0.0 );
+    assertEquals( 5.0, crawler.getMovieRate( document ), 0.0 );
   }
 
   @Test
   public void getMovieRateTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document document = getDocumenFromFile( movieTestPath );
-    assertEquals( 8.5, dataManager.getMovieRate( document ), 0.0 );
+    assertEquals( 8.5, crawler.getMovieRate( document ), 0.0 );
   }
 
     @Test
     public void getMovieRatingCountMockTest(){
-        DataManager dataManager = mock(DataManager.class);
-        when(dataManager.getMovieRatingCount(any(Document.class))).thenReturn(5.0);
+        Crawler crawler = mock(Crawler.class);
+        when(crawler.getMovieRatingCount(any(Document.class))).thenReturn(5.0);
         Document document = new Document("");
-        assertEquals(5.0,dataManager.getMovieRatingCount(document), 0.0);
+        assertEquals(5.0, crawler.getMovieRatingCount(document), 0.0);
     }
 
   @Test
   public void getMovieRatingCountTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document document = getDocumenFromFile( movieTestPath );
-    assertEquals( 845705, dataManager.getMovieRatingCount( document ), 0.0 );
+    assertEquals( 845705, crawler.getMovieRatingCount( document ), 0.0 );
   }
 
     @Test
     public void getMovieGenresMockTest(){
-        DataManager dataManager = mock(DataManager.class);
+        Crawler crawler = mock(Crawler.class);
         List<String> genres = new ArrayList<String>();
         genres.add("action");
         genres.add("biography");
-        when(dataManager.getMovieGenres(any(Document.class))).thenReturn(genres);
+        when(crawler.getMovieGenres(any(Document.class))).thenReturn(genres);
         Document document = new Document("");
-        List<String> result = dataManager.getMovieGenres(document);
+        List<String> result = crawler.getMovieGenres(document);
         assertThat(result.get(0)).isEqualTo("action");
         assertThat(result.get(1)).isEqualTo("biography");
     }
 
   @Test
   public void getMovieGenresTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document document = getDocumenFromFile( movieTestPath );
     List<String> genres = new ArrayList<String>( );
     genres.add( "Drama" );
     genres.add( "Mystery" );
     genres.add( "Sci-Fi" );
-    List<String> result = dataManager.getMovieGenres( document );
+    List<String> result = crawler.getMovieGenres( document );
     assertThat( result.get( 0 ) ).isEqualTo( "Drama" );
     assertThat( result.get( 1 ) ).isEqualTo( "Mystery" );
     assertThat( result.get( 2 ) ).isEqualTo( "Sci-Fi" );
@@ -162,36 +160,36 @@ public class DataManagerTest {
 
   @Test
   public void getActorNameMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getActorName( any( Document.class ) ) )
+    Crawler crawler = mock( Crawler.class );
+    when( crawler.getActorName( any( Document.class ) ) )
       .thenReturn( "Leonardo DiCaprio" );
     Document document = new Document( "" );
-    assertEquals( "Leonardo DiCaprio", dataManager.getActorName( document ) );
+    assertEquals( "Leonardo DiCaprio", crawler.getActorName( document ) );
   }
 
   @Test
   public void getActorNameTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document doc = getDocumenFromFile( actorTestPath );
-    assertEquals( "Leonardo DiCaprio", dataManager.getActorName( doc ) );
+    assertEquals( "Leonardo DiCaprio", crawler.getActorName( doc ) );
   }
 
   @Test
   public void getActorBirthDateMockTest( ) {
-    DataManager dataManager = mock( DataManager.class );
+    Crawler crawler = mock( Crawler.class );
     Date date = new Date( );
-    when( dataManager.getActorBirthDate( any( Document.class ) ) )
+    when( crawler.getActorBirthDate( any( Document.class ) ) )
       .thenReturn( date );
     Document document = new Document( "" );
-    assertEquals( date, dataManager.getActorBirthDate( document ) );
+    assertEquals( date, crawler.getActorBirthDate( document ) );
   }
 
   @Test
   public void getActorBirthDateTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document document = getDocumenFromFile( actorTestPath );
     Format formatter = new SimpleDateFormat( "dd MMMM yyyy", Locale.US );
-    Date date = dataManager.getActorBirthDate( document );
+    Date date = crawler.getActorBirthDate( document );
     String result = formatter.format( date );
     assertEquals( "11 November 1974", result );
   }
@@ -199,111 +197,111 @@ public class DataManagerTest {
   @Test
   public void getActorMoviesLinksMockTest( ) {
     List<String> links = new ArrayList<String>( );
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getActorMoviesLinks( any( Document.class ) ) )
+    Crawler crawler = mock( Crawler.class );
+    when( crawler.getActorMoviesLinks( any( Document.class ) ) )
       .thenReturn( links );
-    assertThat( dataManager.getActorMoviesLinks( new Document( "" ) ) )
+    assertThat( crawler.getActorMoviesLinks( new Document( "" ) ) )
       .isEqualTo( links );
   }
 
   @Test
   public void getActorMoviesLinksTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     Document doc = getDocumenFromFile( actorTestPath );
-    assertThat( dataManager.getActorMoviesLinks( doc ) ).hasSize( 37 );
+    assertThat( crawler.getActorMoviesLinks( doc ) ).hasSize( 37 );
   }
 
   @Test
   public void getMoviesFromLinksTest( ) {
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getMoviesFromLinks( anyListOf( String.class ),
+    Crawler crawler = mock( Crawler.class );
+    when( crawler.getMoviesFromLinks( anyListOf( String.class ),
         any( Class.class ) ) ).thenCallRealMethod( );
-    List<Movie> result = dataManager.getMoviesFromLinks( new ArrayList<String>( ),
+    List<Movie> result = crawler.getMoviesFromLinks( new ArrayList<String>( ),
         MovieBasic.class );
     assertThat( result ).isEmpty( );
   }
 
     @Test
     public void getActorMoviesTest(){
-        DataManager dataManager = mock(DataManager.class);
+        Crawler crawler = mock(Crawler.class);
         Document doc = getDocumenFromFile(actorTestPath);
-        when(dataManager.getActorMovies(doc,MovieBasic.class)).thenCallRealMethod();
-        when(dataManager.getMoviesFromLinks(anyListOf(String.class),any(Class.class))).thenReturn(new ArrayList<Movie>());
+        when(crawler.getActorMovies(doc,MovieBasic.class)).thenCallRealMethod();
+        when(crawler.getMoviesFromLinks(anyListOf(String.class),any(Class.class))).thenReturn(new ArrayList<Movie>());
 
-        assertThat(dataManager.getActorMovies(doc,MovieBasic.class)).isEmpty();
+        assertThat(crawler.getActorMovies(doc,MovieBasic.class)).isEmpty();
     }
 
     @Test
     public void createSearchedLinkCorrect(){
-        DataManager dataManager = new DataManager();
-        String link = dataManager.createSearchedLink("Brad pitt");
+        Crawler crawler = new Crawler();
+        String link = crawler.createSearchedLink("Brad pitt");
         assertEquals("http://www.imdb.com/find?q=Brad+pitt",link);
     }
 
     @Test
     public void findActorLinkTest(){
-        DataManager dataManager = mock(DataManager.class);
+        Crawler crawler = mock(Crawler.class);
         Document doc = getDocumenFromFile(searchResultPagePath);
-        when(dataManager.downloadDocument(anyString())).thenReturn(doc);
-        when(dataManager.findActorLink("Brad Pitt")).thenCallRealMethod();
-        String actorLink = dataManager.findActorLink("Brad Pitt");
+        when(crawler.downloadDocument(anyString())).thenReturn(doc);
+        when(crawler.findActorLink("Brad Pitt")).thenCallRealMethod();
+        String actorLink = crawler.findActorLink("Brad Pitt");
         assertThat(actorLink).startsWith("/name/nm0000093/");
     }
 
   @Test
   public void getBirthDateActorsLinksTest( ) {
-    DataManager dataManager = new DataManager( );
-    assertThat( dataManager.getBirthDateActorsLinks( "1994-05-21" ) ).hasSize( 2 );
+    Crawler crawler = new Crawler( );
+    assertThat( crawler.getBirthDateActorsLinks( "1994-05-21" ) ).hasSize( 2 );
   }
 
   @Test
   public void getBirthDateActorsLinksMockTest( ) {
     List<String> links = new ArrayList<String>( );
-    DataManager dataManager = mock( DataManager.class );
-    when( dataManager.getBirthDateActorsLinks( any( String.class ) ) )
+    Crawler crawler = mock( Crawler.class );
+    when( crawler.getBirthDateActorsLinks( any( String.class ) ) )
       .thenReturn( links );
-    assertThat( dataManager.getBirthDateActorsLinks( new String( "" ) ) )
+    assertThat( crawler.getBirthDateActorsLinks( new String( "" ) ) )
       .isEqualTo( links );
   }
 
   @Test
   public void getActorsFromLinksTest( ) {
-    DataManager dataManager = new DataManager( );
-    assertThat( dataManager
-      .getActorsFromLinks( dataManager.getBirthDateActorsLinks( "1994-05-21" ) )
+    Crawler crawler = new Crawler( );
+    assertThat( crawler
+      .getActorsFromLinks( crawler.getBirthDateActorsLinks( "1994-05-21" ) )
       .size( ) ).isEqualTo( 2 );
   }
 
   @Test
   public void getVotesOfTheHighestRatedMoviesTest( ) {
-    DataManager dataManager = new DataManager( );
+    Crawler crawler = new Crawler( );
     /*
      * for ( EnumGenre genre : EnumGenre.values( ) ) { assertThat(
-     * dataManager.getVotesOfTheHighestRatedMovies( genre.toString( ) ).size( )
+     * crawler.getVotesOfTheHighestRatedMovies( genre.toString( ) ).size( )
      * ) .isEqualTo( 50 ); }
      */
-    assertThat( dataManager.getVotesOfTheHighestRatedMovies( "Action" ).size( ) )
+    assertThat( crawler.getVotesOfTheHighestRatedMovies( "Action" ).size( ) )
       .isEqualTo( 50 );
-    assertThat( dataManager.getVotesOfTheHighestRatedMovies( "Drama" ).size( ) )
+    assertThat( crawler.getVotesOfTheHighestRatedMovies( "Drama" ).size( ) )
       .isEqualTo( 50 );
-    assertThat( dataManager.getVotesOfTheHighestRatedMovies( "Horror" ).size( ) )
+    assertThat( crawler.getVotesOfTheHighestRatedMovies( "Horror" ).size( ) )
       .isEqualTo( 50 );
   }
 
     @Test
     public void getMostPopularCelebsLinksTest(){
-        DataManager mockedDataManager = mock(DataManager.class);
+        Crawler mockedCrawler = mock(Crawler.class);
         Document document = getDocumenFromFile(topCelebsTestPath);
-        when(mockedDataManager.downloadDocument(anyString())).thenReturn(document);
-        when(mockedDataManager.getMostPopularCelebsLinks()).thenCallRealMethod();
-        List<String> list = mockedDataManager.getMostPopularCelebsLinks();
+        when(mockedCrawler.downloadDocument(anyString())).thenReturn(document);
+        when(mockedCrawler.getMostPopularCelebsLinks()).thenCallRealMethod();
+        List<String> list = mockedCrawler.getMostPopularCelebsLinks();
         assertEquals(50, list.size());
     }
 
     @Test
     public void getMostPopularMoviesLinksTest(){
-        DataManager dataManager = new DataManager();
+        Crawler crawler = new Crawler();
         Document doc = getDocumenFromFile(mostPopularMoviesTestPath);
-        assertThat(dataManager.getMostPopularMoviesLinks(doc)).hasSize(100);
+        assertThat(crawler.getMostPopularMoviesLinks(doc)).hasSize(100);
     }
 }

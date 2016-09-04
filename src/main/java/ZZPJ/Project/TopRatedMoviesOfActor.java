@@ -1,6 +1,5 @@
 package ZZPJ.Project;
 
-import ZZPJ.Project.Model.DataManager;
 import ZZPJ.Project.Model.Movie;
 
 import java.util.ArrayList;
@@ -10,11 +9,11 @@ import java.util.List;
 
 public class TopRatedMoviesOfActor {
 
-    private DataManager dataManager;
+    private Crawler crawler;
     private Comparator<Movie> movieRatingValueComparator = new MovieRatingValueComparator();
 
-    public TopRatedMoviesOfActor(DataManager dataManager){
-        this.dataManager = dataManager;
+    public TopRatedMoviesOfActor(Crawler crawler){
+        this.crawler = crawler;
     }
 
     public List<Movie> sortMoviesByRatingValue(List<Movie> movies) {

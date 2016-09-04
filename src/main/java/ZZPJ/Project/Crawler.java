@@ -1,12 +1,13 @@
-package ZZPJ.Project.Model;
+package ZZPJ.Project;
 
+import ZZPJ.Project.Model.Actor;
+import ZZPJ.Project.Model.Movie;
+import ZZPJ.Project.Model.MovieBasic;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-
-import ZZPJ.Project.EnumGenre;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-public class DataManager {
+public class Crawler {
 
     private static final String MOST_POPULAR_CELEBS_URL = "http://www.imdb.com/search/name?gender=male,female&ref_=nv_cel_m_3";
     private static final String MOST_POPULAR_MOVIES_URL = "http://www.imdb.com/chart/moviemeter?ref_=nv_mv_mpm_8";
@@ -111,7 +112,7 @@ public class DataManager {
         return birth;
     }
 
-  public List<Movie> getActorMovies( Document document, Class movieType ) {
+  public List<Movie> getActorMovies(Document document, Class movieType ) {
     List<String> links = getActorMoviesLinks( document );
     List<Movie> movies = getMoviesFromLinks( links, movieType );
     return movies;
@@ -129,7 +130,7 @@ public class DataManager {
 
     public List<Movie> getMoviesFromLinks(List<String> links, final Class movieType){
         final List<Movie> movies = new ArrayList<Movie>();
-        final DataManager dataManager = this;
+        final Crawler crawler = this;
         final CountDownLatch latch= new CountDownLatch(links.size());
         for (final String link : links){
             Thread thread = new Thread(new Runnable() {
@@ -143,7 +144,7 @@ public class DataManager {
                             movie = (Movie) constructor.newInstance(new MovieBasic());
                         }
                         System.out.println("start " + link);
-                        if (movie.downloadMovieInfo(dataManager, ("http://www.imdb.com" + link))){
+                        if (movie.downloadMovieInfo(crawler, ("http://www.imdb.com" + link))){
                             movies.add(movie);
                             System.out.println("finish " + link);
                         } else {
@@ -186,9 +187,9 @@ public class DataManager {
     return links;
   }
 
-  public List<Actor> getActorsFromLinks( List<String> links ) {
+  public List<Actor> getActorsFromLinks(List<String> links ) {
     final List<Actor> actors = new ArrayList<Actor>( );
-    final DataManager dataManager = this;
+    final Crawler crawler = this;
     final CountDownLatch latch = new CountDownLatch( links.size( ) );
     for ( final String link : links ) {
       Thread thread = new Thread( new Runnable( ) {
@@ -196,7 +197,7 @@ public class DataManager {
         public void run( ) {
           Actor actor = new Actor( );
           System.out.println( "start " + link );
-          if ( actor.downloadActorInfo( dataManager,
+          if ( actor.downloadActorInfo(crawler,
               ( "http://www.imdb.com" + link ) ) ) {
             actors.add( actor );
             System.out.println( "finish " + link );
