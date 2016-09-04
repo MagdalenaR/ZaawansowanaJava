@@ -15,7 +15,7 @@ public class MovieWithGenres extends MovieDecorator {
 
     public boolean downloadMovieInfo(Crawler crawler, String urlForMovie) {
         Document document = crawler.downloadDocument(urlForMovie);
-        if(document==null || document.equals("")){
+        if (document == null || document.equals("")) {
             return false;
         } else {
             movie.downloadMovieInfo(crawler, urlForMovie);

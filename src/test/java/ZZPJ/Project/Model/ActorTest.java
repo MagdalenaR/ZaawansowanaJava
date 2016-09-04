@@ -32,7 +32,7 @@ public class ActorTest {
     }
 
     @Test
-    public void downloadActorInfoTest(){
+    public void downloadActorInfoTest() {
         Date date = new Date();
         when(mockedCrawler.downloadDocument(anyString())).thenReturn(mockedDocument);
         when(mockedCrawler.getPageId(any(Document.class))).thenReturn("nm12345");

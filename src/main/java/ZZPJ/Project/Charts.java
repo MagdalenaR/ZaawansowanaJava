@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class Charts {
 
-    public void showChartFrame(String title, JFreeChart chart){
+    public void showChartFrame(String title, JFreeChart chart) {
         JFrame frame = new JFrame(title);
         frame.add(new ChartPanel(chart));
         frame.pack();
@@ -19,15 +19,15 @@ public class Charts {
         frame.setVisible(true);
     }
 
-    public void createBarChart(String title, DefaultCategoryDataset dataset, String xLabel, String yLabel){
+    public void createBarChart(String title, DefaultCategoryDataset dataset, String xLabel, String yLabel) {
         JFreeChart chart = ChartFactory.createBarChart(title,
                 xLabel, yLabel, dataset, PlotOrientation.VERTICAL,
                 true, true, false);
-        showChartFrame(title,chart);
+        showChartFrame(title, chart);
     }
 
-    public void createPieChart(String title, DefaultPieDataset dataset){
-        JFreeChart chart = ChartFactory.createPieChart(title,dataset,true,true,false);
-        showChartFrame(title,chart);
+    public void createPieChart(String title, DefaultPieDataset dataset) {
+        JFreeChart chart = ChartFactory.createPieChart(title, dataset, true, true, false);
+        showChartFrame(title, chart);
     }
 }

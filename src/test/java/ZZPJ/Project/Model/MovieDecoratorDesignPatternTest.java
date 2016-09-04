@@ -14,11 +14,8 @@ import java.util.Arrays;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -47,7 +44,7 @@ public class MovieDecoratorDesignPatternTest {
     }
 
     @Test
-    public void downloadMovieBasicInfoTest(){
+    public void downloadMovieBasicInfoTest() {
 
         Date date = new Date();
         when(mockedCrawler.downloadDocument(anyString())).thenReturn(mockedDocument);
@@ -56,7 +53,7 @@ public class MovieDecoratorDesignPatternTest {
         when(mockedCrawler.getMovieReleaseYear(any(Document.class))).thenReturn(date);
 
         String url = "";
-        assertEquals(sutMovieBasic.downloadMovieInfo(mockedCrawler, url),true);
+        assertEquals(sutMovieBasic.downloadMovieInfo(mockedCrawler, url), true);
 //        sutMovieBasic.downloadMovieInfo(mockedCrawler, url);
         assertEquals("tt12345", sutMovieBasic.id);
         assertEquals("Batman", sutMovieBasic.title);
@@ -66,7 +63,7 @@ public class MovieDecoratorDesignPatternTest {
     }
 
     @Test
-    public void downloadMovieWithRatingInfoTest(){
+    public void downloadMovieWithRatingInfoTest() {
 
         Date date = new Date();
         when(mockedCrawler.downloadDocument(anyString())).thenReturn(mockedDocument);
@@ -81,14 +78,14 @@ public class MovieDecoratorDesignPatternTest {
         sutMovieWithRating.downloadMovieInfo(mockedCrawler, url);
 
         assertEquals(sutMovieBasic, sutMovieWithRating.movie);
-        assertEquals(5.0, sutMovieWithRating.rate,0.0);
-        assertEquals(10.0, sutMovieWithRating.ratingCount,0.0);
+        assertEquals(5.0, sutMovieWithRating.rate, 0.0);
+        assertEquals(10.0, sutMovieWithRating.ratingCount, 0.0);
 
         sutMovieWithRating.showMovieInformatation();
     }
 
     @Test
-    public void downloadMovieWithGenresInfoTest(){
+    public void downloadMovieWithGenresInfoTest() {
 
         Date date = new Date();
         when(mockedCrawler.downloadDocument(anyString())).thenReturn(mockedDocument);
@@ -100,13 +97,13 @@ public class MovieDecoratorDesignPatternTest {
         sutMovieWithGenres.downloadMovieInfo(mockedCrawler, "");
         sutMovieWithGenres.showMovieInformatation();
 
-        assertEquals(sutMovieBasic,sutMovieWithGenres.movie);
-        assertEquals("genre1",sutMovieWithGenres.genres.get(0));
-        assertEquals("genre2",sutMovieWithGenres.genres.get(1));
+        assertEquals(sutMovieBasic, sutMovieWithGenres.movie);
+        assertEquals("genre1", sutMovieWithGenres.genres.get(0));
+        assertEquals("genre2", sutMovieWithGenres.genres.get(1));
     }
 
     @Test
-    public void downloadMovieWithRatingAndGenresInfoTest(){
+    public void downloadMovieWithRatingAndGenresInfoTest() {
 
         Date date = new Date();
         when(mockedCrawler.downloadDocument(anyString())).thenReturn(mockedDocument);
@@ -125,12 +122,12 @@ public class MovieDecoratorDesignPatternTest {
         m1.downloadMovieInfo(mockedCrawler, "");
         m1.showMovieInformatation();
 
-        assertEquals("tt12345", ((MovieBasic)((MovieWithGenres)((MovieWithRating)m1).movie).movie).id);
-        assertEquals("Batman",((MovieBasic)((MovieWithGenres)((MovieWithRating)m1).movie).movie).title);
-        assertEquals(date,((MovieBasic)((MovieWithGenres)((MovieWithRating)m1).movie).movie).releaseDate);
-        assertEquals("genre1",((MovieWithGenres)((MovieWithRating)m1).movie).genres.get(0));
-        assertEquals("genre2",((MovieWithGenres)((MovieWithRating)m1).movie).genres.get(1));
-        assertEquals(5.0,((MovieWithRating)m1).rate,0.0);
-        assertEquals(10.0,((MovieWithRating)m1).ratingCount,0.0);
+        assertEquals("tt12345", ((MovieBasic) ((MovieWithGenres) ((MovieWithRating) m1).movie).movie).id);
+        assertEquals("Batman", ((MovieBasic) ((MovieWithGenres) ((MovieWithRating) m1).movie).movie).title);
+        assertEquals(date, ((MovieBasic) ((MovieWithGenres) ((MovieWithRating) m1).movie).movie).releaseDate);
+        assertEquals("genre1", ((MovieWithGenres) ((MovieWithRating) m1).movie).genres.get(0));
+        assertEquals("genre2", ((MovieWithGenres) ((MovieWithRating) m1).movie).genres.get(1));
+        assertEquals(5.0, ((MovieWithRating) m1).rate, 0.0);
+        assertEquals(10.0, ((MovieWithRating) m1).ratingCount, 0.0);
     }
 }

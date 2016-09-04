@@ -15,10 +15,10 @@ public class Actor {
     private Date birthDate;
     private List<Movie> movies = new ArrayList<Movie>();
 
-    public void showActorInformatation(){
+    public void showActorInformatation() {
         String birth = null;
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-        if (birthDate!=null){
+        if (birthDate != null) {
             birth = formatter.format(birthDate);
         }
 
@@ -26,33 +26,33 @@ public class Actor {
         System.out.println("Name: " + name);
         System.out.println("Birth date: " + birth);
         System.out.println("Movies:");
-        for (Movie movie : movies){
+        for (Movie movie : movies) {
             movie.showMovieInformatation();
         }
     }
 
-    public boolean downloadActorInfo(Crawler crawler, String urlForActor, Class<?> movieType){
+    public boolean downloadActorInfo(Crawler crawler, String urlForActor, Class<?> movieType) {
         Document document = crawler.downloadDocument(urlForActor);
         if (document == null || document.equals("")) {
-          return false;
+            return false;
         } else {
-        this.id = crawler.getPageId(document);
-        this.name = crawler.getActorName(document);
-        this.birthDate = crawler.getActorBirthDate(document);
-        this.movies = crawler.getActorMovies(document,movieType);
-        return true;
+            this.id = crawler.getPageId(document);
+            this.name = crawler.getActorName(document);
+            this.birthDate = crawler.getActorBirthDate(document);
+            this.movies = crawler.getActorMovies(document, movieType);
+            return true;
         }
     }
 
 
-    public boolean downloadActorInfo(Crawler crawler, String urlForActor){
-      Document document = crawler.downloadDocument(urlForActor);
-      if (document == null || document.equals("")) {
-        return false;
-      } else {  
-      downloadActorInfo(crawler,urlForActor,MovieBasic.class);
-      return true;
-      }
+    public boolean downloadActorInfo(Crawler crawler, String urlForActor) {
+        Document document = crawler.downloadDocument(urlForActor);
+        if (document == null || document.equals("")) {
+            return false;
+        } else {
+            downloadActorInfo(crawler, urlForActor, MovieBasic.class);
+            return true;
+        }
     }
 
     public String getId() {
