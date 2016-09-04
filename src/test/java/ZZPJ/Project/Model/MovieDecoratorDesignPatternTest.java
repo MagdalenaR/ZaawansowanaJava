@@ -13,7 +13,11 @@ import java.util.Arrays;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -22,6 +26,9 @@ public class MovieDecoratorDesignPatternTest {
 
     @Mock
     public DataManager mockedDataManager;
+
+    @Mock
+    public Document mockedDocument;
 
     @Spy
     @InjectMocks
@@ -42,12 +49,14 @@ public class MovieDecoratorDesignPatternTest {
     public void downloadMovieBasicInfoTest(){
 
         Date date = new Date();
+        when(mockedDataManager.downloadDocument(anyString())).thenReturn(mockedDocument);
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
         when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
 
         String url = "";
-        sutMovieBasic.downloadMovieInfo(mockedDataManager, url);
+        assertEquals(sutMovieBasic.downloadMovieInfo(mockedDataManager, url),true);
+//        sutMovieBasic.downloadMovieInfo(mockedDataManager, url);
         assertEquals("tt12345", sutMovieBasic.id);
         assertEquals("Batman", sutMovieBasic.title);
         assertEquals(date, sutMovieBasic.releaseDate);
@@ -59,6 +68,7 @@ public class MovieDecoratorDesignPatternTest {
     public void downloadMovieWithRatingInfoTest(){
 
         Date date = new Date();
+        when(mockedDataManager.downloadDocument(anyString())).thenReturn(mockedDocument);
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
         when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
@@ -80,6 +90,7 @@ public class MovieDecoratorDesignPatternTest {
     public void downloadMovieWithGenresInfoTest(){
 
         Date date = new Date();
+        when(mockedDataManager.downloadDocument(anyString())).thenReturn(mockedDocument);
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
         when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);
@@ -95,8 +106,9 @@ public class MovieDecoratorDesignPatternTest {
 
     @Test
     public void downloadMovieWithRatingAndGenresInfoTest(){
-        //DataManager mockedDataManager = mock(DataManager.class);
+
         Date date = new Date();
+        when(mockedDataManager.downloadDocument(anyString())).thenReturn(mockedDocument);
         when(mockedDataManager.getPageId(any(Document.class))).thenReturn("tt12345");
         when(mockedDataManager.getMovieTitle(any(Document.class))).thenReturn("Batman");
         when(mockedDataManager.getMovieReleaseYear(any(Document.class))).thenReturn(date);

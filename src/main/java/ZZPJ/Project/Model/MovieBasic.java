@@ -11,12 +11,16 @@ public class MovieBasic implements Movie {
     protected String title;
     protected Date releaseDate;
 
-    public void downloadMovieInfo(DataManager dataManager, String urlForMovie) {
+    public boolean downloadMovieInfo(DataManager dataManager, String urlForMovie) {
         Document document = dataManager.downloadDocument(urlForMovie);
-
-        this.id = dataManager.getPageId(document);
-        this.title = dataManager.getMovieTitle(document);
-        this.releaseDate = dataManager.getMovieReleaseYear(document);
+        if (document == null || document.equals("")) {
+            return false;
+        } else {
+            this.id = dataManager.getPageId(document);
+            this.title = dataManager.getMovieTitle(document);
+            this.releaseDate = dataManager.getMovieReleaseYear(document);
+            return true;
+        }
     }
 
     public void showMovieInformatation() {
@@ -24,9 +28,33 @@ public class MovieBasic implements Movie {
         System.out.println("Title: " + this.title);
         String date = null;
         Format formatter = new SimpleDateFormat("yyyy");
-        if (this.releaseDate != null){
+        if (this.releaseDate != null) {
             date = formatter.format(releaseDate);
         }
         System.out.println("Release year: " + date);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }
