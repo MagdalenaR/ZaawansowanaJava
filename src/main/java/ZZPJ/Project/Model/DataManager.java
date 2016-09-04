@@ -23,17 +23,6 @@ public class DataManager {
     private static final String MOST_POPULAR_CELEBS_URL = "http://www.imdb.com/search/name?gender=male,female&ref_=nv_cel_m_3";
     private static final String MOST_POPULAR_MOVIES_URL = "http://www.imdb.com/chart/moviemeter?ref_=nv_mv_mpm_8";
 
-  public Document downloadDocument( String url ) {
-    Document document = new Document( url );
-    try {
-      document = Jsoup.connect( url ).userAgent( "Mozilla Chrome Safari Opera" )
-        .timeout( 100 * 1000 ).get( );
-    } catch ( IOException e ) {
-      e.printStackTrace( );
-    }
-    return document;
-  }
-
     public Document downloadDocument(String url){
         Document document = new Document(url);
         try {
