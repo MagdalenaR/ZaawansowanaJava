@@ -2,6 +2,7 @@ package ZZPJ.Project;
 
 import ZZPJ.Project.Model.Actor;
 import ZZPJ.Project.Model.Movie;
+import ZZPJ.Project.Model.MovieWithGenres;
 import javafx.scene.chart.Chart;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,5 +47,13 @@ public class StatisticsMakerTest {
     public void numberOfActorsInAgeRangeTest() throws InterruptedException {
         statisticsMaker.numberOfActorsInAgeRange();
         verify(dataManagement, times(1)).countNumberOfActorsInAge(anyListOf(Actor.class));
+    }
+
+    @Test
+    public void genresOfMostPopularMoviesTest() throws InterruptedException {
+        statisticsMaker.genresOfMostPopularMovies();
+        verify(crawler, times(1)).getMostPopularMovies(MovieWithGenres.class);
+        verify(dataManagement, times(1)).countNumberOfOccurrencesOfGenres(anyListOf(Movie.class));
+        verify(dataManagement, times(1)).percentageOfGenres(anyMapOf(String.class,Integer.class));
     }
 }

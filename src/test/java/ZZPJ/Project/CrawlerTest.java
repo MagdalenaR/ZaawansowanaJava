@@ -246,7 +246,7 @@ public class CrawlerTest {
         when(crawler.downloadDocument(anyString())).thenReturn(doc);
         when(crawler.findActorLink("Brad Pitt")).thenCallRealMethod();
         String actorLink = crawler.findActorLink("Brad Pitt");
-        assertThat(actorLink).startsWith("/name/nm0000093/");
+        assertThat(actorLink).contains("/name/nm0000093/");
     }
 
     @Test
