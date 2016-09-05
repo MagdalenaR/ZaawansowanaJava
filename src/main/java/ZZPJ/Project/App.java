@@ -1,6 +1,8 @@
 package ZZPJ.Project;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class App extends JFrame {
     private StatisticsMaker statisticsMaker = new StatisticsMaker();
@@ -8,6 +10,7 @@ public class App extends JFrame {
     public App() {
         super("IMDB CRAWLER");
         init();
+        addActionlistenersTobuttons();
     }
 
     private void init() {
@@ -71,6 +74,48 @@ public class App extends JFrame {
         averageNumberOfVotesTopRatedMoviesOfGenreButton.setBounds(labelWidth + 130, 170, 50, 30);
     }
 
+    private void addActionlistenersTobuttons(){
+
+         topRatedMoviesOfActorButton.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 int numberOfMovies = Integer.parseInt(topRatedMoviesOfActorNumberOfMoviesTextField.getText());
+                 String actorName = topRatedMoviesOfActorActorNameTextField.getText();
+                 statisticsMaker.topRatedMoviesOfActor(actorName, numberOfMovies);
+             }
+         });
+
+        numberOfActorsInAgeRangeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                statisticsMaker.numberOfActorsInAgeRange();
+            }
+        });
+
+        genresOfMostPopularMoviesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                statisticsMaker.genresOfMostPopularMovies();
+            }
+        });
+
+        actorsBornOnDateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String date = actorsBornOnDateTextField.getText();
+                statisticsMaker.actorsBornInDate(date);
+            }
+        });
+
+        averageNumberOfVotesTopRatedMoviesOfGenreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String genre = averageNumberOfVotesTopRatedMoviesOfGenreComboBox.getSelectedItem().toString();
+                statisticsMaker.averageNumberOfVotesTopRatedMoviesOfGenre(genre);
+            }
+        });
+    }
+
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -84,7 +129,7 @@ public class App extends JFrame {
     private JTextField topRatedMoviesOfActorActorNameTextField = new JTextField("Nicolas Cage");
     private JButton topRatedMoviesOfActorButton = new JButton("Go");
 
-    private JLabel numberOfActorsInAgeRangeLabel = new JLabel("Number of actors in age range");
+    private JLabel numberOfActorsInAgeRangeLabel = new JLabel("Number of actors in age group");
     private JButton numberOfActorsInAgeRangeButton = new JButton("Go");
 
     private JLabel genresOfMostPopularMoviesLabel = new JLabel("Genres of most popular movies");
