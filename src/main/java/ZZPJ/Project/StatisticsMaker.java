@@ -73,4 +73,10 @@ public class StatisticsMaker {
             actor.showActorInformatation();
         }
     }
+
+    public void averageNumberOfVotesTopRatedMoviesOfGenre(String genre){
+        List<Integer> votes = crawler.getVotesOfTheHighestRatedMovies(genre);
+        double average = dataManagement.calculateArithmeticMean(votes);
+        System.out.println(average);
+    }
 }
