@@ -1,5 +1,6 @@
 package ZZPJ.Project.Model;
 
+import ZZPJ.Project.Crawler;
 import org.jsoup.nodes.Document;
 
 import java.text.Format;
@@ -11,14 +12,14 @@ public class MovieBasic implements Movie {
     protected String title;
     protected Date releaseDate;
 
-    public boolean downloadMovieInfo(DataManager dataManager, String urlForMovie) {
-        Document document = dataManager.downloadDocument(urlForMovie);
+    public boolean downloadMovieInfo(Crawler crawler, String urlForMovie) {
+        Document document = crawler.downloadDocument(urlForMovie);
         if (document == null || document.equals("")) {
             return false;
         } else {
-            this.id = dataManager.getPageId(document);
-            this.title = dataManager.getMovieTitle(document);
-            this.releaseDate = dataManager.getMovieReleaseYear(document);
+            this.id = crawler.getPageId(document);
+            this.title = crawler.getMovieTitle(document);
+            this.releaseDate = crawler.getMovieReleaseYear(document);
             return true;
         }
     }

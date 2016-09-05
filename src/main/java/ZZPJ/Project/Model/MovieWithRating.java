@@ -1,5 +1,6 @@
 package ZZPJ.Project.Model;
 
+import ZZPJ.Project.Crawler;
 import org.jsoup.nodes.Document;
 
 public class MovieWithRating extends MovieDecorator {
@@ -10,14 +11,14 @@ public class MovieWithRating extends MovieDecorator {
         super(movie);
     }
 
-    public boolean downloadMovieInfo(DataManager dataManager, String urlForMovie) {
-        Document document = dataManager.downloadDocument(urlForMovie);
-        if(document==null || document.equals("")){
+    public boolean downloadMovieInfo(Crawler crawler, String urlForMovie) {
+        Document document = crawler.downloadDocument(urlForMovie);
+        if (document == null || document.equals("")) {
             return false;
         } else {
-            movie.downloadMovieInfo(dataManager, urlForMovie);
-            this.rate = dataManager.getMovieRate(document);
-            this.ratingCount = dataManager.getMovieRatingCount(document);
+            movie.downloadMovieInfo(crawler, urlForMovie);
+            this.rate = crawler.getMovieRate(document);
+            this.ratingCount = crawler.getMovieRatingCount(document);
             return true;
         }
     }

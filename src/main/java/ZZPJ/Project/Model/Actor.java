@@ -1,5 +1,6 @@
 package ZZPJ.Project.Model;
 
+import ZZPJ.Project.Crawler;
 import org.jsoup.nodes.Document;
 
 import java.text.Format;
@@ -14,44 +15,48 @@ public class Actor {
     private Date birthDate;
     private List<Movie> movies = new ArrayList<Movie>();
 
-    public void showActorInformatation(){
+    public void showActorInformatation() {
         String birth = null;
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-        if (birthDate!=null){
+        if (birthDate != null) {
             birth = formatter.format(birthDate);
         }
 
         System.out.println("Id: " + id);
         System.out.println("Name: " + name);
         System.out.println("Birth date: " + birth);
-        System.out.println("Movies:");
-        for (Movie movie : movies){
-            movie.showMovieInformatation();
+        if(movies.size()!=0){
+            System.out.println("Movies:");
+            for (Movie movie : movies) {
+                movie.showMovieInformatation();
+            }
         }
     }
 
-    public boolean downloadActorInfo(DataManager dataManager, String urlForActor, Class<?> movieType){
-        Document document = dataManager.downloadDocument(urlForActor);
+    public boolean downloadActorInfo(Crawler crawler, String urlForActor, Class<?> movieType) {
+        Document document = crawler.downloadDocument(urlForActor);
         if (document == null || document.equals("")) {
-          return false;
+            return false;
         } else {
-        this.id = dataManager.getPageId(document);
-        this.name = dataManager.getActorName(document);
-        this.birthDate = dataManager.getActorBirthDate(document);
-        this.movies = dataManager.getActorMovies(document,movieType);
-        return true;
+            this.id = crawler.getPageId(document);
+            this.name = crawler.getActorName(document);
+            this.birthDate = crawler.getActorBirthDate(document);
+            if(movieType!=null){
+                this.movies = crawler.getActorMovies(document, movieType);
+            }
+            return true;
         }
     }
 
 
-    public boolean downloadActorInfo(DataManager dataManager, String urlForActor){
-      Document document = dataManager.downloadDocument(urlForActor);
-      if (document == null || document.equals("")) {
-        return false;
-      } else {  
-      downloadActorInfo(dataManager,urlForActor,MovieBasic.class);
-      return true;
-      }
+    public boolean downloadActorInfo(Crawler crawler, String urlForActor) {
+        Document document = crawler.downloadDocument(urlForActor);
+        if (document == null || document.equals("")) {
+            return false;
+        } else {
+            downloadActorInfo(crawler, urlForActor, MovieBasic.class);
+            return true;
+        }
     }
 
     public String getId() {

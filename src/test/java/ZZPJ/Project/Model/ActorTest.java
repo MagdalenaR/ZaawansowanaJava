@@ -1,5 +1,6 @@
 package ZZPJ.Project.Model;
 
+import ZZPJ.Project.Crawler;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +9,6 @@ import org.mockito.Mock;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -18,7 +18,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ActorTest {
     @Mock
-    public DataManager mockedDataManager;
+    public Crawler mockedCrawler;
 
     @Mock
     public Document mockedDocument;
@@ -32,15 +32,15 @@ public class ActorTest {
     }
 
     @Test
-    public void downloadActorInfoTest(){
+    public void downloadActorInfoTest() {
         Date date = new Date();
-        when(mockedDataManager.downloadDocument(anyString())).thenReturn(mockedDocument);
-        when(mockedDataManager.getPageId(any(Document.class))).thenReturn("nm12345");
-        when(mockedDataManager.getActorName(any(Document.class))).thenReturn("Leonardo DiCaprio");
-        when(mockedDataManager.getActorBirthDate(any(Document.class))).thenReturn(date);
+        when(mockedCrawler.downloadDocument(anyString())).thenReturn(mockedDocument);
+        when(mockedCrawler.getPageId(any(Document.class))).thenReturn("nm12345");
+        when(mockedCrawler.getActorName(any(Document.class))).thenReturn("Leonardo DiCaprio");
+        when(mockedCrawler.getActorBirthDate(any(Document.class))).thenReturn(date);
 
         String url = "";
-        sutActor.downloadActorInfo(mockedDataManager, url);
+        sutActor.downloadActorInfo(mockedCrawler, url);
         assertEquals("nm12345", sutActor.getId());
         assertEquals("Leonardo DiCaprio", sutActor.getName());
         assertEquals(date, sutActor.getBirthDate());
