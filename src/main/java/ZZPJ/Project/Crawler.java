@@ -54,13 +54,15 @@ public class Crawler {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy");
 		Date date = null;
 		Element element = document.select("div[class=txt-block]:contains(Release Date)").first();
-		String[] dateWithCountry = ((TextNode) element.childNodes().get(2)).text().split(" \\(");
-		String dateString = dateWithCountry[0].substring(dateWithCountry[0].length() - 4);
 
-		try {
-			date = format.parse(dateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		if(element!=null){
+			String[] dateWithCountry = ((TextNode) element.childNodes().get(2)).text().split(" \\(");
+			String dateString = dateWithCountry[0].substring(dateWithCountry[0].length() - 4);
+			try {
+				date = format.parse(dateString);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		return date;
 	}

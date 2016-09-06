@@ -10,7 +10,7 @@ public class App extends JFrame {
     public App() {
         super("IMDB CRAWLER");
         init();
-        addActionlistenersTobuttons();
+        addActionlistenersToButtons();
     }
 
     private void init() {
@@ -74,7 +74,7 @@ public class App extends JFrame {
         averageNumberOfVotesTopRatedMoviesOfGenreButton.setBounds(labelWidth + 130, 170, 50, 30);
     }
 
-    private void addActionlistenersTobuttons(){
+    private void addActionlistenersToButtons(){
 
          topRatedMoviesOfActorButton.addActionListener(new ActionListener() {
              @Override
@@ -129,7 +129,7 @@ public class App extends JFrame {
     private JTextField topRatedMoviesOfActorActorNameTextField = new JTextField("Nicolas Cage");
     private JButton topRatedMoviesOfActorButton = new JButton("Go");
 
-    private JLabel numberOfActorsInAgeRangeLabel = new JLabel("Number of actors in age group");
+    private JLabel numberOfActorsInAgeRangeLabel = new JLabel("Number of actors in age groups");
     private JButton numberOfActorsInAgeRangeButton = new JButton("Go");
 
     private JLabel genresOfMostPopularMoviesLabel = new JLabel("Genres of most popular movies");
