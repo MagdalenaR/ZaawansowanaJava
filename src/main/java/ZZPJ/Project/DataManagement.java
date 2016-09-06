@@ -42,7 +42,8 @@ public class DataManagement {
     public int countNumberOfActorsInAgeRange(int from, int to, List<Actor> actors) {
         int count = 0;
         for (Actor actor : actors) {
-            if (getActorAge(actor) < to && getActorAge(actor) >= from) {
+            int age = getActorAge(actor);
+            if (age >= from && age < to) {
                 count++;
             }
         }

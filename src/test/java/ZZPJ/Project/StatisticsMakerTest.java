@@ -64,7 +64,6 @@ public class StatisticsMakerTest {
 
     @Test
     public void averageNumberOfVotesTopRatedMoviesOfGenreTest(){
-//        StatisticsMaker statisticsMaker = new StatisticsMaker();
         statisticsMaker.averageNumberOfVotesTopRatedMoviesOfGenre("Action");
         verify(crawler, times(1)).getVotesOfTheHighestRatedMovies("Action");
         verify(dataManagement, times(1)).calculateArithmeticMean(anyListOf(Integer.class));

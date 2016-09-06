@@ -22,7 +22,6 @@ public class StatisticsMaker {
     }
 
     public void topRatedMoviesOfActor(String actorName, int numberOfMovies) {
-
         Actor actor = new Actor();
         List<Movie> movies = new ArrayList<Movie>();
         String linkToActor = crawler.findActorLink(actorName);
@@ -65,20 +64,20 @@ public class StatisticsMaker {
         charts.createPieChart("Occurrences of Gnres of Most Popular Movies", dataset);
     }
 
-  public void actorsBornInDate( String date ) {
-    List<String> links = crawler.getBirthDateActorsLinks( date );
-    List<Actor> actors = crawler.getActorsFromLinks( links, null );
-    if ( actors.isEmpty( ) ) {
-      System.out.println( "There is no actors born in specified date" );
-    } else {
-      System.out.println( "People born " + date );
-      for ( Actor actor : actors ) {
-        actor.showActorInformatation( );
-      }
+    public void actorsBornInDate(String date) {
+        List<String> links = crawler.getBirthDateActorsLinks(date);
+        List<Actor> actors = crawler.getActorsFromLinks(links, null);
+        if (actors.size() == 0) {
+            System.out.println("There is no actors born in specified date");
+        } else {
+            System.out.println("People born on" + date);
+            for (Actor actor : actors) {
+                actor.showActorInformatation();
+            }
+        }
     }
-  }
 
-    public void averageNumberOfVotesTopRatedMoviesOfGenre(String genre){
+    public void averageNumberOfVotesTopRatedMoviesOfGenre(String genre) {
         List<Integer> votes = crawler.getVotesOfTheHighestRatedMovies(genre);
         double average = dataManagement.calculateArithmeticMean(votes);
         System.out.println(average);

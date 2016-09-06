@@ -54,10 +54,9 @@ public class MovieDecoratorDesignPatternTest {
 
         String url = "";
         assertEquals(sutMovieBasic.downloadMovieInfo(mockedCrawler, url), true);
-//        sutMovieBasic.downloadMovieInfo(mockedCrawler, url);
-        assertEquals("tt12345", sutMovieBasic.id);
-        assertEquals("Batman", sutMovieBasic.title);
-        assertEquals(date, sutMovieBasic.releaseDate);
+        assertEquals("tt12345", sutMovieBasic.getId());
+        assertEquals("Batman", sutMovieBasic.getTitle());
+        assertEquals(date, sutMovieBasic.getReleaseDate());
 
         sutMovieBasic.showMovieInformatation();
     }

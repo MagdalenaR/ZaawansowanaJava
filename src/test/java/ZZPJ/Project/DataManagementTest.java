@@ -10,6 +10,11 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class DataManagementTest {
 
@@ -25,7 +30,7 @@ public class DataManagementTest {
 
     @Test
     public void getActorAgeTest() {
-        Actor actor = new Actor();
+        Actor actor = mock(Actor.class);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
@@ -33,11 +38,23 @@ public class DataManagementTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        actor.setBirthDate(date);
+        when(actor.getBirthDate()).thenReturn(date);
         DataManagement dataManagement = new DataManagement();
         assertEquals(22, dataManagement.getActorAge(actor));
     }
 
+    @Test
+    public void countNumberOfActorsInAgeRangeMockTest() throws ParseException {
+        List<Actor> actors = Arrays.asList(new Actor(), new Actor(), new Actor(), new Actor());
+        DataManagement dataManagement = mock(DataManagement.class);
+        when(dataManagement.countNumberOfActorsInAgeRange(anyInt(),anyInt(),anyListOf(Actor.class))).thenCallRealMethod();
+        when(dataManagement.getActorAge(any(Actor.class)))
+                .thenReturn(20,30,22,68)
+                .thenReturn(20,30,22,68);
+        assertEquals(1, dataManagement.countNumberOfActorsInAgeRange(30, 40, actors));
+        assertEquals(2, dataManagement.countNumberOfActorsInAgeRange(30, 80, actors));
+
+    }
 
     @Test
     public void countNumberOfActorsInAgeRangeTest() throws ParseException {
@@ -60,6 +77,22 @@ public class DataManagementTest {
         assertEquals(1, dataManagement.countNumberOfActorsInAgeRange(56, 57, actors));
         assertEquals(2, dataManagement.countNumberOfActorsInAgeRange(40, 80, actors));
 
+    }
+
+    @Test
+    public void countNumberOfActorsInAgeMockTest() throws ParseException {
+        List<Actor> actors = Arrays.asList(new Actor(), new Actor(), new Actor(), new Actor());
+        DataManagement dataManagement = mock(DataManagement.class);
+        when(dataManagement.countNumberOfActorsInAgeRange(anyInt(),anyInt(),anyListOf(Actor.class))).thenReturn(10,20,30,40,50,60,70);
+        when(dataManagement.countNumberOfActorsInAge(anyListOf(Actor.class))).thenCallRealMethod();
+        Map<String, Integer> testMap = dataManagement.countNumberOfActorsInAge(actors);
+        assertThat(testMap.get("0-10")).isEqualTo(10);
+        assertThat(testMap.get("10-20")).isEqualTo(20);
+        assertThat(testMap.get("20-30")).isEqualTo(30);
+        assertThat(testMap.get("30-40")).isEqualTo(40);
+        assertThat(testMap.get("40-50")).isEqualTo(50);
+        assertThat(testMap.get("50-60")).isEqualTo(60);
+        assertThat(testMap.get("60-70")).isEqualTo(70);
     }
 
     @Test
@@ -135,6 +168,5 @@ public class DataManagementTest {
         assertThat(percentage.get("horror")).isEqualTo(37.5);
         assertThat(percentage.get("drama")).isEqualTo(25.0);
     }
-
 
 }
