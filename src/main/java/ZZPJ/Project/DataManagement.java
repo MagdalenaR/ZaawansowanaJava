@@ -33,11 +33,9 @@ public class DataManagement {
 
     public Map<String, Integer> countNumberOfActorsInAge(List<Actor> actorList) {
         Map<String, Integer> numberOfActor = new LinkedHashMap<String, Integer>();
-
         for (int i = 0; i < 70; i += 10) {
             numberOfActor.put(i + "-" + (i + 10), countNumberOfActorsInAgeRange(i, i + 10, actorList));
         }
-
         numberOfActor.put(">70", countNumberOfActorsInAgeRange(70, 1000, actorList));
         return numberOfActor;
     }
@@ -58,7 +56,6 @@ public class DataManagement {
             while (!(movie instanceof MovieBasic) && !(movie instanceof MovieWithGenres)) {
                 movie = ((MovieDecorator) movie).getMovie();
             }
-
             if (movie instanceof MovieWithGenres) {
                 for (String genre : ((MovieWithGenres) movie).getGenres()) {
                     if (occurrencesOfGenres.containsKey(genre)) {
@@ -84,10 +81,8 @@ public class DataManagement {
     public Map<String, Double> percentageOfGenres(Map<String, Integer> map) {
         int numberOfGenres = countNumberOfAllGenres(map);
         Map<String, Double> percentageOccurrences = new HashMap<String, Double>();
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             double percentage = (double) ((entry.getValue() * 100) / (double) numberOfGenres);
-
             percentageOccurrences.put(entry.getKey(), (double) Math.round(percentage * 100d) / 100d);
         }
         return percentageOccurrences;
