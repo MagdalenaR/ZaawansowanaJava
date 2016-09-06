@@ -2,7 +2,6 @@ package ZZPJ.Project;
 
 import ZZPJ.Project.Model.*;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class DataManagement {
@@ -18,7 +17,7 @@ public class DataManagement {
     }
 
     public int getActorAge(Actor actor) {
-        if(actor.getBirthDate()!=null){
+        if (actor.getBirthDate() != null) {
             Date birthDate = actor.getBirthDate();
             Calendar cal = Calendar.getInstance();
             int currentYear = cal.get(Calendar.YEAR);
@@ -50,6 +49,12 @@ public class DataManagement {
         return count;
     }
 
+    /**
+     * Creates map which contains number of genres from given list of movies.
+     *
+     * @param movies - list of movies
+     * @return - map containing genres and their number of occurrences in list of movies
+     */
     public Map<String, Integer> countNumberOfOccurrencesOfGenres(List<Movie> movies) {
         Map<String, Integer> occurrencesOfGenres = new HashMap<String, Integer>();
         for (Movie movie : movies) {
@@ -69,6 +74,12 @@ public class DataManagement {
         return occurrencesOfGenres;
     }
 
+    /**
+     * Count number of occurrences of all genres, including repeated
+     *
+     * @param genres - map containing genres and the number of occurrences of each genre
+     * @return - number of all genres, including repeated
+     */
     public int countNumberOfAllGenres(Map<String, Integer> genres) {
         int numberOfGenres = 0;
         for (Map.Entry<String, Integer> entry : genres.entrySet()) {
@@ -78,6 +89,12 @@ public class DataManagement {
         return numberOfGenres;
     }
 
+    /**
+     * Calculate percentage of occurrences of genres.
+     *
+     * @param map - map containing genres and the number of occurrences of each genre
+     * @return - map containing percentage of occurrences of genres
+     */
     public Map<String, Double> percentageOfGenres(Map<String, Integer> map) {
         int numberOfGenres = countNumberOfAllGenres(map);
         Map<String, Double> percentageOccurrences = new HashMap<String, Double>();

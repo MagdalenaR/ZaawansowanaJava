@@ -23,6 +23,7 @@ public class Charts {
 
     /**
      * Displays chart in new frame.
+     *
      * @param title - chart title
      * @param chart - chart to display
      */
@@ -36,10 +37,11 @@ public class Charts {
 
     /**
      * Creates bar chart witch given data and display it on new frame.
-     * @param title - chart title
+     *
+     * @param title   - chart title
      * @param dataset - dataset for the chart
-     * @param xLabel - the label for the x axis
-     * @param yLabel - the label for the y axis
+     * @param xLabel  - the label for the x axis
+     * @param yLabel  - the label for the y axis
      */
     public void createBarChart(String title, DefaultCategoryDataset dataset, String xLabel, String yLabel) {
         JFreeChart chart = ChartFactory.createBarChart(title,
@@ -53,7 +55,8 @@ public class Charts {
 
     /**
      * Creates pie chart witch given data and display it on new frame.
-     * @param title - chart title
+     *
+     * @param title   - chart title
      * @param dataset - dataset for the chart
      */
     public void createPieChart(String title, DefaultPieDataset dataset) {
@@ -65,21 +68,22 @@ public class Charts {
 
     /**
      * Creates bar chart for movies based on rating value and displays it on new frame.
+     *
      * @param title - chart title
-     * @param data - list of movies
+     * @param data  - list of movies
      */
-    public void createMovieRatingValueBarChart(String title, List<Movie> data){
+    public void createMovieRatingValueBarChart(String title, List<Movie> data) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for(Movie movie : data){
-            while(!(movie instanceof MovieWithRating) && !(movie instanceof MovieBasic)){
-                movie = ((MovieDecorator)movie).getMovie();
+        for (Movie movie : data) {
+            while (!(movie instanceof MovieWithRating) && !(movie instanceof MovieBasic)) {
+                movie = ((MovieDecorator) movie).getMovie();
             }
             Movie movie1 = movie;
-            while(!(movie1 instanceof MovieBasic)){
-                movie1 = ((MovieDecorator)movie1).getMovie();
+            while (!(movie1 instanceof MovieBasic)) {
+                movie1 = ((MovieDecorator) movie1).getMovie();
             }
-            if(movie instanceof MovieWithRating){
-                dataset.setValue(((MovieWithRating)movie).getRate(), "Rating value", ((MovieBasic)movie1).getTitle());
+            if (movie instanceof MovieWithRating) {
+                dataset.setValue(((MovieWithRating) movie).getRate(), "Rating value", ((MovieBasic) movie1).getTitle());
             }
         }
         createBarChart(title, dataset, "Movie", "Rating");
