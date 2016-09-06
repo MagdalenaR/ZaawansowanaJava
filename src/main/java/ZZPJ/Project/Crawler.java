@@ -166,17 +166,6 @@ public class Crawler {
     }
 
     /**
-     * This method is used to check correctness of date format, given by the
-     * user.
-     * 
-     * @param dateOfActorBirth
-     * @return true if the date format is correct, otherwise false
-     */
-    public boolean checkDateFormat(String dateOfActorBirth) {
-        return dateOfActorBirth.matches("\\d{4}-\\d{2}-\\d{2}");
-    }
-
-    /**
      * This method is used to create website address with actors born on given
      * date, then creates addresses to web pages about actors and adds them to
      * the list.
@@ -186,7 +175,8 @@ public class Crawler {
      */
     public List<String> getBirthDateActorsLinks(String dateOfActorBirth) {
         List<String> links = new ArrayList<String>();
-        if (checkDateFormat(dateOfActorBirth)) {
+        DataManagement dataManagement = new DataManagement();
+        if (dataManagement.checkDateFormat(dateOfActorBirth)) {
             Document document = downloadDocument(
                     "http://www.imdb.com/search/name?birth_date=" + dateOfActorBirth + "," + dateOfActorBirth);
             if (document != null) {
@@ -197,10 +187,7 @@ public class Crawler {
                 }
             } else
                 return null;
-        } else {
-            LOGGER.warning("Bad date format");
         }
-
         return links;
     }
 
