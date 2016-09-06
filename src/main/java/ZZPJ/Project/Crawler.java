@@ -165,10 +165,25 @@ public class Crawler {
         return movies;
     }
 
+    /**
+     * This method is used to check correctness of date format, given by the
+     * user.
+     * 
+     * @param dateOfActorBirth
+     * @return true if the date format is correct, otherwise false
+     */
     public boolean checkDateFormat(String dateOfActorBirth) {
         return dateOfActorBirth.matches("\\d{4}-\\d{2}-\\d{2}");
     }
 
+    /**
+     * This method is used to create website address with actors born on given
+     * date, then creates addresses to web pages about actors and adds them to
+     * the list.
+     * 
+     * @param dateOfActorBirth
+     * @return list of web pages about actors
+     */
     public List<String> getBirthDateActorsLinks(String dateOfActorBirth) {
         List<String> links = new ArrayList<String>();
         if (checkDateFormat(dateOfActorBirth)) {
@@ -183,12 +198,22 @@ public class Crawler {
             } else
                 return null;
         } else {
-            LOGGER.warning("bad date format");
+            LOGGER.warning("Bad date format");
         }
 
         return links;
     }
 
+    /**
+     * This method is used to create actors and download information about them
+     * based on addresses to web pages.
+     * 
+     * @param links
+     *            - list of web pages about actors
+     * @param movieType
+     *            - type of movie
+     * @return list of actors
+     */
     public List<Actor> getActorsFromLinks(List<String> links, Class movieType) {
         final List<Actor> actors = new ArrayList<Actor>();
         final Crawler crawler = this;
@@ -218,6 +243,13 @@ public class Crawler {
         return actors;
     }
 
+    /**
+     * This method is used to create website address with the highest rated
+     * movies by genre and adds information about number of votes for each film to the list.
+     * 
+     * @param genre of the movie given by user
+     * @return list of votes for movies
+     */
     public List<Integer> getVotesOfTheHighestRatedMovies(String genre) {
         List<Integer> votes = new ArrayList<Integer>();
         for (EnumGenre enumGenre : EnumGenre.values()) {

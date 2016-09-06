@@ -65,14 +65,18 @@ public class StatisticsMaker {
         charts.createPieChart("Occurrences of Gnres of Most Popular Movies", dataset);
     }
 
-    public void actorsBornInDate(String date){
-        List<String> links = crawler.getBirthDateActorsLinks(date);
-        List<Actor> actors = crawler.getActorsFromLinks(links, null);
-        System.out.println("People born " + date);
-        for(Actor actor : actors){
-            actor.showActorInformatation();
-        }
+  public void actorsBornInDate( String date ) {
+    List<String> links = crawler.getBirthDateActorsLinks( date );
+    List<Actor> actors = crawler.getActorsFromLinks( links, null );
+    if ( actors.isEmpty( ) ) {
+      System.out.println( "There is no actors born in specified date" );
+    } else {
+      System.out.println( "People born " + date );
+      for ( Actor actor : actors ) {
+        actor.showActorInformatation( );
+      }
     }
+  }
 
     public void averageNumberOfVotesTopRatedMoviesOfGenre(String genre){
         List<Integer> votes = crawler.getVotesOfTheHighestRatedMovies(genre);
