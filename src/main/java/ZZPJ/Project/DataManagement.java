@@ -129,4 +129,19 @@ public class DataManagement {
         }
         return list2;
     }
+    
+    /**
+     * This method is used to check correctness of date format, given by the
+     * user.
+     * 
+     * @param dateOfActorBirth
+     * @return true if the date format is correct, otherwise false
+     */
+    public boolean checkDateFormat(String dateOfActorBirth) {
+        if (dateOfActorBirth.matches("^((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$")) return true; 
+        else {
+          System.out.println( "Bad date format" );
+          return false;
+        }
+    }
 }
