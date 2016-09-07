@@ -3,9 +3,11 @@ package ZZPJ.Project;
 import ZZPJ.Project.Model.*;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class DataManagement {
 
+    private static final Logger LOGGER = Logger.getLogger("DataManagement");
     private Comparator<Movie> movieRatingValueComparator = new MovieRatingValueComparator();
 
     public double calculateArithmeticMean(List<Integer> number) {
@@ -165,7 +167,7 @@ public class DataManagement {
     public boolean checkDateFormat(String dateOfActorBirth) {
         if (dateOfActorBirth.matches("^((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$")) return true; 
         else {
-          System.out.println( "Bad date format" );
+          LOGGER.warning( "Bad date format" );
           return false;
         }
     }
