@@ -79,12 +79,12 @@ public class Crawler {
         }
     }
 
-    public double getMovieRatingCount(Document document) {
+    public int getMovieRatingCount(Document document) {
         if (!document.select("span[itemprop=ratingValue]").text().isEmpty()) {
-            return (Double.parseDouble(
+            return (Integer.parseInt(
                     document.select("span[itemprop=ratingCount]").text().replace(",", "").replaceAll("\\u00A0", "")));
         } else {
-            return 0.0;
+            return 0;
         }
     }
 

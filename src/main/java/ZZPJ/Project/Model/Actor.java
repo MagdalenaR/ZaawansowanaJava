@@ -48,17 +48,6 @@ public class Actor {
         }
     }
 
-
-    public boolean downloadActorInfo(Crawler crawler, String urlForActor) {
-        Document document = crawler.downloadDocument(urlForActor);
-        if (document == null || document.equals("")) {
-            return false;
-        } else {
-            downloadActorInfo(crawler, urlForActor, MovieBasic.class);
-            return true;
-        }
-    }
-
     public String getId() {
         return id;
     }

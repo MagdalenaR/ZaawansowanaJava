@@ -36,7 +36,7 @@ public class Charts {
     }
 
     /**
-     * Creates bar chart witch given data and display it on new frame.
+     * Creates bar chart with given data and display it on new frame.
      *
      * @param title   - chart title
      * @param dataset - dataset for the chart
@@ -54,7 +54,7 @@ public class Charts {
     }
 
     /**
-     * Creates pie chart witch given data and display it on new frame.
+     * Creates pie chart with given data and display it on new frame.
      *
      * @param title   - chart title
      * @param dataset - dataset for the chart

@@ -40,7 +40,7 @@ public class ActorTest {
         when(mockedCrawler.getActorBirthDate(any(Document.class))).thenReturn(date);
 
         String url = "";
-        sutActor.downloadActorInfo(mockedCrawler, url);
+        sutActor.downloadActorInfo(mockedCrawler, url, null);
         assertEquals("nm12345", sutActor.getId());
         assertEquals("Leonardo DiCaprio", sutActor.getName());
         assertEquals(date, sutActor.getBirthDate());
