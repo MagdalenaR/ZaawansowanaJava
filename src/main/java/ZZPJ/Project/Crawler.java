@@ -131,7 +131,7 @@ public class Crawler {
      */
     public List<String> getActorMoviesLinks(Document document) {
         List<String> links = new ArrayList<String>();
-        Elements linksOnPage = document.select("#filmography > .filmo-category-section div[id^=actor]");
+        Elements linksOnPage = document.select("#filmography > .filmo-category-section div[id^=act]");
         for (Element link : linksOnPage) {
             links.add(link.select("a[href^=/title/]").attr("href"));
         }
