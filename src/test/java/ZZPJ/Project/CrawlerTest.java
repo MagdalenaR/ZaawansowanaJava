@@ -2,18 +2,12 @@ package ZZPJ.Project;
 
 import ZZPJ.Project.Model.Movie;
 import ZZPJ.Project.Model.MovieBasic;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -22,23 +16,6 @@ import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.*;
 
 public class CrawlerTest {
-
-    private String movieTestPath = "src/test/java/ZZPJ/Project/TestFiles/MovieTest.html";
-    private String actorTestPath = "src/test/java/ZZPJ/Project/TestFiles/ActorTest.html";
-    private String topCelebsTestPath = "src/test/java/ZZPJ/Project/TestFiles/TopCelebsTest.html";
-    private String searchResultPagePath = "src/test/java/ZZPJ/Project/TestFiles/SearchResultPageTest.html";
-    private String mostPopularMoviesTestPath = "src/test/java/ZZPJ/Project/TestFiles/MostPopularMoviesTest.html";
-
-    private Document getDocumenFromFile(String fileName) {
-        File file = new File(fileName);
-        Document document = new Document(fileName);
-        try {
-            document = Jsoup.parse(file, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return document;
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void downloadDocumentExceptionTest() {
@@ -64,7 +41,7 @@ public class CrawlerTest {
     public void getMovieTitleTest() {
         Crawler crawler = new Crawler();
         Document doc = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
-        assertEquals("Prestiz", crawler.getMovieTitle(doc));
+        assertEquals("The Prestige", crawler.getMovieTitle(doc));
     }
 
     @Test
@@ -74,22 +51,21 @@ public class CrawlerTest {
         Format formatter = new SimpleDateFormat("yyyy");
         Date date = crawler.getMovieReleaseYear(document);
         String result = formatter.format(date);
-        assertEquals("2007", result);
+        assertEquals("2006", result);
     }
 
     @Test
     public void getMovieRateTest() {
         Crawler crawler = new Crawler();
         Document document = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
-        assertThat(crawler.getMovieRate(document)).isBetween(0.0,10.0);
-        //assertEquals(8.5, crawler.getMovieRate(document), 2.0);
+        assertThat(crawler.getMovieRate(document)).isBetween(0.0, 10.0);
     }
 
     @Test
     public void getMovieRatingCountTest() {
         Crawler crawler = new Crawler();
         Document document = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
-        assertThat( crawler.getMovieRatingCount(document)).isGreaterThanOrEqualTo(845705);
+        assertThat(crawler.getMovieRatingCount(document)).isGreaterThanOrEqualTo(845705);
     }
 
     @Test
@@ -103,35 +79,16 @@ public class CrawlerTest {
     }
 
     @Test
-    public void getActorNameMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        when(crawler.getActorName(any(Document.class)))
-                .thenReturn("Leonardo DiCaprio");
-        Document document = new Document("");
-        assertEquals("Leonardo DiCaprio", crawler.getActorName(document));
-    }
-
-    @Test
     public void getActorNameTest() {
         Crawler crawler = new Crawler();
-        Document doc = getDocumenFromFile(actorTestPath);
+        Document doc = crawler.downloadDocument("http://www.imdb.com/name/nm0000138/");
         assertEquals("Leonardo DiCaprio", crawler.getActorName(doc));
-    }
-
-    @Test
-    public void getActorBirthDateMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        Date date = new Date();
-        when(crawler.getActorBirthDate(any(Document.class)))
-                .thenReturn(date);
-        Document document = new Document("");
-        assertEquals(date, crawler.getActorBirthDate(document));
     }
 
     @Test
     public void getActorBirthDateTest() {
         Crawler crawler = new Crawler();
-        Document document = getDocumenFromFile(actorTestPath);
+        Document document = crawler.downloadDocument("http://www.imdb.com/name/nm0000138/");
         Format formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
         Date date = crawler.getActorBirthDate(document);
         String result = formatter.format(date);
@@ -139,20 +96,10 @@ public class CrawlerTest {
     }
 
     @Test
-    public void getActorMoviesLinksMockTest() {
-        List<String> links = new ArrayList<String>();
-        Crawler crawler = mock(Crawler.class);
-        when(crawler.getActorMoviesLinks(any(Document.class)))
-                .thenReturn(links);
-        assertThat(crawler.getActorMoviesLinks(new Document("")))
-                .isEqualTo(links);
-    }
-
-    @Test
     public void getActorMoviesLinksTest() {
         Crawler crawler = new Crawler();
-        Document doc = getDocumenFromFile(actorTestPath);
-        assertThat(crawler.getActorMoviesLinks(doc)).hasSize(37);
+        Document doc = crawler.downloadDocument("http://www.imdb.com/name/nm0000138/");
+        assertThat(crawler.getActorMoviesLinks(doc).size()).isGreaterThanOrEqualTo(37);
     }
 
     @Test
@@ -168,11 +115,11 @@ public class CrawlerTest {
     @Test
     public void getActorMoviesTest() {
         Crawler crawler = mock(Crawler.class);
-        Document doc = getDocumenFromFile(actorTestPath);
+        Document doc = mock(Document.class);
         when(crawler.getActorMovies(doc, MovieBasic.class)).thenCallRealMethod();
-        when(crawler.getMoviesFromLinks(anyListOf(String.class), any(Class.class))).thenReturn(new ArrayList<Movie>());
-
-        assertThat(crawler.getActorMovies(doc, MovieBasic.class)).isEmpty();
+        when(crawler.getMoviesFromLinks(anyListOf(String.class), any(Class.class)))
+                .thenReturn(Arrays.asList(new MovieBasic(), new MovieBasic()));
+        assertThat(crawler.getActorMovies(doc, MovieBasic.class)).hasSize(2);
     }
 
     @Test
@@ -185,8 +132,8 @@ public class CrawlerTest {
     @Test
     public void findActorLinkTest() {
         Crawler crawler = mock(Crawler.class);
-        Document doc = getDocumenFromFile(searchResultPagePath);
-        when(crawler.downloadDocument(anyString())).thenReturn(doc);
+        when(crawler.createSearchedLink(anyString())).thenReturn("http://www.imdb.com/find?q=Brad+pitt");
+        when(crawler.downloadDocument(anyString())).thenCallRealMethod();
         when(crawler.findActorLink("Brad Pitt")).thenCallRealMethod();
         String actorLink = crawler.findActorLink("Brad Pitt");
         assertThat(actorLink).contains("/name/nm0000093/");
@@ -196,16 +143,6 @@ public class CrawlerTest {
     public void getBirthDateActorsLinksTest() {
         Crawler crawler = new Crawler();
         assertThat(crawler.getBirthDateActorsLinks("1994-05-21")).hasSize(2);
-    }
-
-    @Test
-    public void getBirthDateActorsLinksMockTest() {
-        List<String> links = new ArrayList<String>();
-        Crawler crawler = mock(Crawler.class);
-        when(crawler.getBirthDateActorsLinks(any(String.class)))
-                .thenReturn(links);
-        assertThat(crawler.getBirthDateActorsLinks(new String("")))
-                .isEqualTo(links);
     }
 
     @Test
@@ -219,11 +156,6 @@ public class CrawlerTest {
     @Test
     public void getVotesOfTheHighestRatedMoviesTest() {
         Crawler crawler = new Crawler();
-    /*
-     * for ( EnumGenre genre : EnumGenre.values( ) ) { assertThat(
-     * crawler.getVotesOfTheHighestRatedMovies( genre.toString( ) ).size( )
-     * ) .isEqualTo( 50 ); }
-     */
         assertThat(crawler.getVotesOfTheHighestRatedMovies("Action").size())
                 .isEqualTo(50);
         assertThat(crawler.getVotesOfTheHighestRatedMovies("Drama").size())
@@ -235,8 +167,7 @@ public class CrawlerTest {
     @Test
     public void getMostPopularCelebsLinksTest() {
         Crawler mockedCrawler = mock(Crawler.class);
-        Document document = getDocumenFromFile(topCelebsTestPath);
-        when(mockedCrawler.downloadDocument(anyString())).thenReturn(document);
+        when(mockedCrawler.downloadDocument(anyString())).thenCallRealMethod();
         when(mockedCrawler.getMostPopularCelebsLinks()).thenCallRealMethod();
         List<String> list = mockedCrawler.getMostPopularCelebsLinks();
         assertEquals(50, list.size());
@@ -245,7 +176,7 @@ public class CrawlerTest {
     @Test
     public void getMostPopularMoviesLinksTest() {
         Crawler crawler = new Crawler();
-        Document doc = getDocumenFromFile(mostPopularMoviesTestPath);
+        Document doc = crawler.downloadDocument("http://www.imdb.com/chart/moviemeter?ref_=nv_mv_mpm_8");
         assertThat(crawler.getMostPopularMoviesLinks(doc)).hasSize(100);
     }
 }
