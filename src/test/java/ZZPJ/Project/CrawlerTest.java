@@ -54,48 +54,23 @@ public class CrawlerTest {
     }
 
     @Test
-    public void getPageIdMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        when(crawler.getPageId(any(Document.class))).thenReturn("tt12345");
-        Document document = new Document("");
-        assertEquals("tt12345", crawler.getPageId(document));
-    }
-
-    @Test
     public void getPageIdTest() {
         Crawler crawler = new Crawler();
-        Document doc = getDocumenFromFile(movieTestPath);
+        Document doc = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
         assertEquals("tt0482571", crawler.getPageId(doc));
-    }
-
-    @Test
-    public void getMovieTitleMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        when(crawler.getMovieTitle(any(Document.class))).thenReturn("Batman");
-        Document document = new Document("");
-        assertEquals("Batman", crawler.getMovieTitle(document));
     }
 
     @Test
     public void getMovieTitleTest() {
         Crawler crawler = new Crawler();
-        Document doc = getDocumenFromFile(movieTestPath);
+        Document doc = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
         assertEquals("Prestiz", crawler.getMovieTitle(doc));
-    }
-
-    @Test
-    public void getMovieReleaseYearMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        Date date = new Date();
-        when(crawler.getMovieReleaseYear(any(Document.class))).thenReturn(date);
-        Document document = new Document("");
-        assertEquals(date, crawler.getMovieReleaseYear(document));
     }
 
     @Test
     public void getMovieReleaseYearTest() {
         Crawler crawler = new Crawler();
-        Document document = getDocumenFromFile(movieTestPath);
+        Document document = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
         Format formatter = new SimpleDateFormat("yyyy");
         Date date = crawler.getMovieReleaseYear(document);
         String result = formatter.format(date);
@@ -103,56 +78,24 @@ public class CrawlerTest {
     }
 
     @Test
-    public void getMovieRateMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        when(crawler.getMovieRate(any(Document.class))).thenReturn(5.0);
-        Document document = new Document("");
-        assertEquals(5.0, crawler.getMovieRate(document), 0.0);
-    }
-
-    @Test
     public void getMovieRateTest() {
         Crawler crawler = new Crawler();
-        Document document = getDocumenFromFile(movieTestPath);
-        assertEquals(8.5, crawler.getMovieRate(document), 0.0);
-    }
-
-    @Test
-    public void getMovieRatingCountMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        when(crawler.getMovieRatingCount(any(Document.class))).thenReturn(5.0);
-        Document document = new Document("");
-        assertEquals(5.0, crawler.getMovieRatingCount(document), 0.0);
+        Document document = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
+        assertThat(crawler.getMovieRate(document)).isBetween(0.0,10.0);
+        //assertEquals(8.5, crawler.getMovieRate(document), 2.0);
     }
 
     @Test
     public void getMovieRatingCountTest() {
         Crawler crawler = new Crawler();
-        Document document = getDocumenFromFile(movieTestPath);
-        assertEquals(845705, crawler.getMovieRatingCount(document), 0.0);
-    }
-
-    @Test
-    public void getMovieGenresMockTest() {
-        Crawler crawler = mock(Crawler.class);
-        List<String> genres = new ArrayList<String>();
-        genres.add("action");
-        genres.add("biography");
-        when(crawler.getMovieGenres(any(Document.class))).thenReturn(genres);
-        Document document = new Document("");
-        List<String> result = crawler.getMovieGenres(document);
-        assertThat(result.get(0)).isEqualTo("action");
-        assertThat(result.get(1)).isEqualTo("biography");
+        Document document = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
+        assertThat( crawler.getMovieRatingCount(document)).isGreaterThanOrEqualTo(845705);
     }
 
     @Test
     public void getMovieGenresTest() {
         Crawler crawler = new Crawler();
-        Document document = getDocumenFromFile(movieTestPath);
-        List<String> genres = new ArrayList<String>();
-        genres.add("Drama");
-        genres.add("Mystery");
-        genres.add("Sci-Fi");
+        Document document = crawler.downloadDocument("http://www.imdb.com/title/tt0482571");
         List<String> result = crawler.getMovieGenres(document);
         assertThat(result.get(0)).isEqualTo("Drama");
         assertThat(result.get(1)).isEqualTo("Mystery");

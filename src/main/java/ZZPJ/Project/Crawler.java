@@ -29,7 +29,7 @@ public class Crawler {
     public Document downloadDocument(String url) {
         Document document = new Document(url);
         try {
-            document = Jsoup.connect(url).userAgent("Mozilla Chrome Safari Opera").timeout(100 * 1000).get();
+            document = Jsoup.connect(url).userAgent("Mozilla Chrome Safari Opera").timeout(60 * 1000).get();
         } catch (IOException e) {
             document = null;
             LOGGER.warning("Connection failed");
