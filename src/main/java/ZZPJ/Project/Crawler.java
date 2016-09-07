@@ -290,8 +290,12 @@ public class Crawler {
         Document document = downloadDocument(link);
         if (document != null) {
             Element element = document.select("table[class=findList] tr td[class=result_text]:contains(Act)").first();
-            String linkToActor = element.select("a[href^=/name/]").attr("href");
-            return "http://www.imdb.com" + linkToActor;
+            if (element != null) {
+                String linkToActor = element.select("a[href^=/name/]").attr("href");
+                return "http://www.imdb.com" + linkToActor;
+            } else {
+                LOGGER.warning("No result.");
+            }
         }
         return null;
     }

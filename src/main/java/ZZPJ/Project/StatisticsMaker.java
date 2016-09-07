@@ -27,13 +27,17 @@ public class StatisticsMaker {
      * @param numberOfMovies - number of movies to display
      */
     public void topRatedMoviesOfActor(String actorName, int numberOfMovies) {
+        String linkToActor = crawler.findActorLink(actorName);
+        if (linkToActor==null){
+            return;
+        }
         Actor actor = new Actor();
         List<Movie> movies = new ArrayList<Movie>();
-        String linkToActor = crawler.findActorLink(actorName);
+
         actor.downloadActorInfo(crawler, linkToActor, MovieWithRating.class);
         movies = dataManagement.topNBestRatedMoviesOfActor(numberOfMovies, actor.getMovies());
         if(movies.size() > 0){
-            System.out.println("Top " + numberOfMovies + " rated movies of " + actorName.toUpperCase() + "\n");
+            System.out.println("Top " + numberOfMovies + " rated movies of " + actor.getName() + "\n");
             for (Movie movie : movies) {
                 movie.showMovieInformatation();
                 System.out.println();
@@ -42,7 +46,7 @@ public class StatisticsMaker {
             System.out.println(actorName.toUpperCase() + " - this actor isn't really actor. He didn't play any role!");
         }
 
-        charts.createMovieRatingValueBarChart("Top rated movies of " + actorName.toUpperCase(), movies);
+        charts.createMovieRatingValueBarChart("Top rated movies of " + actor.getName(), movies);
     }
 
     /**

@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,6 +37,7 @@ public class StatisticsMakerTest {
 
     @Test
     public void topRatedMoviesOfActorTest() {
+        when(crawler.findActorLink("Brad Pitt")).thenReturn("link");
         statisticsMaker.topRatedMoviesOfActor("Brad Pitt", 4);
         verify(crawler, times(1)).findActorLink("Brad Pitt");
         verify(dataManagement, times(1)).topNBestRatedMoviesOfActor(anyInt(), anyListOf(Movie.class));
