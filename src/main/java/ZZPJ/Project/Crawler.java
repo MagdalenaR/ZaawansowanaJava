@@ -109,12 +109,23 @@ public class Crawler {
         return birth;
     }
 
+    /**
+     * Creates list of actor movies from actor document.
+     * @param document - actor document
+     * @param movieType - type of movie which will be created
+     * @return - list of movies
+     */
     public List<Movie> getActorMovies(Document document, Class movieType) {
         List<String> links = getActorMoviesLinks(document);
         List<Movie> movies = getMoviesFromLinks(links, movieType);
         return movies;
     }
 
+    /**
+     * Takes links to movies from actor document.
+     * @param document - actor document
+     * @return - list of links to actor movies
+     */
     public List<String> getActorMoviesLinks(Document document) {
         List<String> links = new ArrayList<String>();
         Elements linksOnPage = document.select("#filmography > .filmo-category-section div[id^=actor]");
@@ -124,6 +135,12 @@ public class Crawler {
         return links;
     }
 
+    /**
+     * Create list of movies from given list of links to movie
+     * @param links - list of links to movie
+     * @param movieType - type of movie which will be created
+     * @return - list of movies
+     */
     public List<Movie> getMoviesFromLinks(List<String> links, final Class movieType) {
         final List<Movie> movies = new ArrayList<Movie>();
         final Crawler crawler = this;
@@ -259,6 +276,11 @@ public class Crawler {
         return votes;
     }
 
+    /**
+     * Search link to actor using his name.
+     * @param actorName - actor name to search
+     * @return - link to actor
+     */
     public String findActorLink(String actorName) {
 
         String link = createSearchedLink(actorName);
@@ -271,11 +293,20 @@ public class Crawler {
         return null;
     }
 
+    /**
+     * Creates link to search results page witch searched value
+     * @param searchedValue
+     * @return
+     */
     public String createSearchedLink(String searchedValue) {
         searchedValue = searchedValue.replace(" ", "+");
         return ("http://www.imdb.com/find?q=" + searchedValue);
     }
 
+    /**
+     * Download links to actors from most popular celebs.
+     * @return - list of links to actors
+     */
     public List<String> getMostPopularCelebsLinks() {
         Document document = downloadDocument(MOST_POPULAR_CELEBS_URL);
         List<String> linksToActors = new ArrayList<String>();
@@ -286,6 +317,11 @@ public class Crawler {
         return linksToActors;
     }
 
+    /**
+     * Creates list of most popular movies.
+     * @param movieType - type of movie which will be created
+     * @return - list of most popular movies
+     */
     public List<Movie> getMostPopularMovies(Class movieType) {
         Document document = downloadDocument(MOST_POPULAR_MOVIES_URL);
         List<String> links = getMostPopularMoviesLinks(document);
@@ -293,6 +329,11 @@ public class Crawler {
         return movies;
     }
 
+    /**
+     * Download links to movies from most popular movies.
+     * @param document - document witch most popular movies.
+     * @return list of links to most popular movies
+     */
     public List<String> getMostPopularMoviesLinks(Document document) {
         List<String> links = new ArrayList<String>();
         Elements elements = document.select("table .titleColumn ");
@@ -303,6 +344,10 @@ public class Crawler {
         return links;
     }
 
+    /**
+     * Creates list of most popular actors
+     * @return - list of most popular actors
+     */
     public List<Actor> getMostPopularActors() {
         List<String> links = getMostPopularCelebsLinks();
         List<Actor> actors = getActorsFromLinks(links, null);

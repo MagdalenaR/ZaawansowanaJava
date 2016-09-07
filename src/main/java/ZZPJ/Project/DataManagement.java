@@ -30,6 +30,12 @@ public class DataManagement {
         }
     }
 
+    /**
+     * Creates map which contains number of actors in age group.
+     * Each age group contains next 10 years, exluding last one (more than 70 years).
+     * @param actorList
+     * @return
+     */
     public Map<String, Integer> countNumberOfActorsInAge(List<Actor> actorList) {
         Map<String, Integer> numberOfActor = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 70; i += 10) {
@@ -39,6 +45,13 @@ public class DataManagement {
         return numberOfActor;
     }
 
+    /**
+     * Count number of actors in age of given range
+     * @param from - minimum age in group (include)
+     * @param to - maximum age in group (exclude)
+     * @param actors - list of actors
+     * @return - number of actors in given age group
+     */
     public int countNumberOfActorsInAgeRange(int from, int to, List<Actor> actors) {
         int count = 0;
         for (Actor actor : actors) {
@@ -52,7 +65,6 @@ public class DataManagement {
 
     /**
      * Creates map which contains number of genres from given list of movies.
-     *
      * @param movies - list of movies
      * @return - map containing genres and their number of occurrences in list of movies
      */
@@ -77,7 +89,6 @@ public class DataManagement {
 
     /**
      * Count number of occurrences of all genres, including repeated
-     *
      * @param genres - map containing genres and the number of occurrences of each genre
      * @return - number of all genres, including repeated
      */
@@ -92,7 +103,6 @@ public class DataManagement {
 
     /**
      * Calculate percentage of occurrences of genres.
-     *
      * @param map - map containing genres and the number of occurrences of each genre
      * @return - map containing percentage of occurrences of genres
      */
@@ -106,6 +116,11 @@ public class DataManagement {
         return percentageOccurrences;
     }
 
+    /**
+     * Sort movies by rating value.
+     * @param movies - list of movies to sort.
+     * @return - sorted movies.
+     */
     public List<Movie> sortMoviesByRatingValue(List<Movie> movies) {
         List<Movie> sortedMovies = new ArrayList<Movie>();
         sortedMovies.addAll(movies);
@@ -113,6 +128,12 @@ public class DataManagement {
         return sortedMovies;
     }
 
+    /**
+     * Creates list of n best rated movies from given list.
+     * @param count - number of the best rated movies to return
+     * @param movies - list of movies to take the best rated
+     * @return - list containing n the best rated movies
+     */
     public List<Movie> topNBestRatedMoviesOfActor(int count, List<Movie> movies) {
         movies = sortMoviesByRatingValue(movies);
         if (movies.size() > count) {
@@ -121,6 +142,12 @@ public class DataManagement {
         return movies;
     }
 
+    /**
+     * Returns n first elements from list
+     * @param n - number of elements to return
+     * @param list - list from which will be extracted first n elements
+     * @return
+     */
     public List getNFirstElements(int n, List list) {
         List list2 = new ArrayList();
         list2.addAll(list);
@@ -131,9 +158,7 @@ public class DataManagement {
     }
     
     /**
-     * This method is used to check correctness of date format, given by the
-     * user.
-     * 
+     * This method is used to check correctness of date format, given by the user.
      * @param dateOfActorBirth
      * @return true if the date format is correct, otherwise false
      */
