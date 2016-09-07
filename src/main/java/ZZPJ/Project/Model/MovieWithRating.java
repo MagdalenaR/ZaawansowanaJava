@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 
 public class MovieWithRating extends MovieDecorator {
     protected double rate;
-    protected double ratingCount;
+    protected int ratingCount;
 
     public MovieWithRating(Movie movie) {
         super(movie);
@@ -37,11 +37,11 @@ public class MovieWithRating extends MovieDecorator {
         this.rate = rate;
     }
 
-    public double getRatingCount() {
+    public int getRatingCount() {
         return ratingCount;
     }
 
-    public void setRatingCount(double ratingCount) {
+    public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
     }
 }

@@ -54,10 +54,9 @@ public class MovieDecoratorDesignPatternTest {
 
         String url = "";
         assertEquals(sutMovieBasic.downloadMovieInfo(mockedCrawler, url), true);
-//        sutMovieBasic.downloadMovieInfo(mockedCrawler, url);
-        assertEquals("tt12345", sutMovieBasic.id);
-        assertEquals("Batman", sutMovieBasic.title);
-        assertEquals(date, sutMovieBasic.releaseDate);
+        assertEquals("tt12345", sutMovieBasic.getId());
+        assertEquals("Batman", sutMovieBasic.getTitle());
+        assertEquals(date, sutMovieBasic.getReleaseDate());
 
         sutMovieBasic.showMovieInformatation();
     }
@@ -72,7 +71,7 @@ public class MovieDecoratorDesignPatternTest {
         when(mockedCrawler.getMovieReleaseYear(any(Document.class))).thenReturn(date);
 
         when(mockedCrawler.getMovieRate(any(Document.class))).thenReturn(5.0);
-        when(mockedCrawler.getMovieRatingCount(any(Document.class))).thenReturn(10.0);
+        when(mockedCrawler.getMovieRatingCount(any(Document.class))).thenReturn(10);
 
         String url = "";
         sutMovieWithRating.downloadMovieInfo(mockedCrawler, url);
@@ -112,7 +111,7 @@ public class MovieDecoratorDesignPatternTest {
         when(mockedCrawler.getMovieReleaseYear(any(Document.class))).thenReturn(date);
 
         when(mockedCrawler.getMovieRate(any(Document.class))).thenReturn(5.0);
-        when(mockedCrawler.getMovieRatingCount(any(Document.class))).thenReturn(10.0);
+        when(mockedCrawler.getMovieRatingCount(any(Document.class))).thenReturn(10);
         when(mockedCrawler.getMovieGenres(any(Document.class))).thenReturn(Arrays.asList("genre1", "genre2"));
 
         Movie m1 = new MovieBasic();
@@ -128,6 +127,6 @@ public class MovieDecoratorDesignPatternTest {
         assertEquals("genre1", ((MovieWithGenres) ((MovieWithRating) m1).movie).genres.get(0));
         assertEquals("genre2", ((MovieWithGenres) ((MovieWithRating) m1).movie).genres.get(1));
         assertEquals(5.0, ((MovieWithRating) m1).rate, 0.0);
-        assertEquals(10.0, ((MovieWithRating) m1).ratingCount, 0.0);
+        assertEquals(10, ((MovieWithRating) m1).ratingCount);
     }
 }
